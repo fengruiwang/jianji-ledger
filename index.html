@@ -1,0 +1,751 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#eff6f2" />
+<meta name="description" content="简记：简单、私密、离线可用的家庭日常记账工具。" />
+<meta name="application-name" content="简记" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<link rel="manifest" href="./manifest.webmanifest" />
+<link rel="icon" type="image/png" href="./icons/icon-192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="./icons/icon-192.png" />
+<title>简记 · 家庭记账 V1.1.0</title>
+<style>
+  :root{--bg:#f5f7f4;--surface:#fff;--ink:#1d302b;--muted:#73847c;--border:#e8eee9;--accent:#147e66;--accent-light:#e4f5ee;--navy:#123e32;--warn:#d37643;--shadow:0 12px 34px rgba(32,60,47,.055);--radius:22px}
+  *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",PingFang SC,"Noto Sans CJK SC",sans-serif;font-size:14px;-webkit-font-smoothing:antialiased}button,input,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #9bd7c4;outline-offset:2px}button{touch-action:manipulation}a{color:var(--accent)}.hidden{display:none!important}.app{max-width:1120px;margin:0 auto;padding:29px 28px 90px}
+  .header{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}.brand{display:flex;align-items:center;gap:12px}.brand-icon{width:43px;height:43px;display:grid;place-items:center;border-radius:14px;background:var(--navy);color:#f9f7ee;font-weight:700;font-size:23px}.brand-name{font-size:22px;font-weight:760;letter-spacing:.5px}.brand-desc{color:var(--muted);font-size:12px;margin-top:3px}.head-actions{display:flex;align-items:center;gap:9px}.ghost-btn,.outline-btn,.icon-btn{background:white;border:1px solid var(--border);color:#43554e;border-radius:12px;min-height:39px;padding:9px 13px;font-weight:550;transition:background .15s,transform .15s}.ghost-btn:hover,.outline-btn:hover,.icon-btn:hover{background:#f2f7f3}.icon-btn{width:37px;height:37px;display:grid;place-items:center;padding:0;font-size:22px;line-height:1}.primary-btn{background:var(--accent);color:white;border:0;border-radius:12px;min-height:42px;padding:10px 19px;font-weight:700;box-shadow:0 5px 14px #136d541e}.primary-btn:hover{background:#116c57}.primary-btn:active,.ghost-btn:active,.outline-btn:active{transform:translateY(1px)}.primary-btn .plus{font-size:21px;font-weight:400;vertical-align:-1px;margin-right:4px}
+  .topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:17px}.heading{margin:0;font-size:25px;font-weight:770;letter-spacing:-.5px}.subheading{margin:6px 0 0;color:var(--muted);font-size:13px}.month-switch{display:flex;align-items:center;gap:8px}.month-label{font-size:15px;font-weight:740;min-width:93px;text-align:center}.today-btn{margin-left:4px;padding:8px 11px;font-size:12px}.summary{border-radius:24px;padding:26px 30px;background:linear-gradient(112deg,#163e33 0%,#1a624c 72%,#187a5d 100%);box-shadow:0 16px 36px #16493923;color:#fff;position:relative;overflow:hidden}.summary:before{content:"";position:absolute;width:320px;height:320px;border:1px solid #ffffff21;border-radius:50%;right:-110px;top:-170px}.summary:after{content:"";position:absolute;width:245px;height:245px;border:1px solid #ffffff1b;border-radius:50%;right:-65px;top:-115px}.summary-inner{position:relative;z-index:1}.sum-label{font-size:13px;opacity:.8}.sum-main{font-size:40px;line-height:1.3;font-variant-numeric:tabular-nums;font-weight:730;letter-spacing:-1.5px;margin:7px 0 20px;overflow-wrap:anywhere}.summary-detail{display:flex;gap:35px;flex-wrap:wrap}.summary-detail>div{min-width:115px}.summary-detail strong{font-size:19px;display:block;margin-top:6px;letter-spacing:-.3px;font-weight:690;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}.summary-detail span{font-size:12px;opacity:.75}.summary-note{margin-top:16px;padding-top:12px;border-top:1px solid #ffffff23;font-size:12px;opacity:.72}
+  .dashboard{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(270px,.95fr);gap:19px;margin-top:22px;align-items:start}.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}.panel-body{padding:21px}.panel-title{font-size:17px;font-weight:750;margin:0}.panel-desc{margin:6px 0 0;color:var(--muted);font-size:12px}.panel-head{padding:22px 22px 14px;display:flex;justify-content:space-between;align-items:center;gap:13px}.toolbar{padding:2px 22px 18px;display:flex;gap:10px;flex-wrap:wrap}.search-wrap{position:relative;flex:1;min-width:170px}.search-icon{position:absolute;left:13px;top:11px;opacity:.5}.search{width:100%;background:#f6f8f6;border:1px solid transparent;border-radius:11px;padding:11px 12px 11px 36px;color:var(--ink);outline:0}.search:focus{border-color:#94cdb8;background:#fff}.filters{display:flex;gap:3px;background:#f3f6f3;border-radius:11px;padding:3px}.filter-btn{border:0;background:transparent;color:#6d7e75;padding:8px 12px;border-radius:8px;font-size:12px;white-space:nowrap}.filter-btn.active{background:white;color:var(--accent);font-weight:750;box-shadow:0 1px 4px #24433611}.entries{min-height:255px}.day-heading{padding:13px 22px 9px;border-top:1px solid #f1f3f1;display:flex;align-items:center;justify-content:space-between;color:#7a8982;background:#fbfcfb;font-size:12px;font-weight:680}.entry{display:flex;align-items:center;gap:12px;padding:13px 22px;border-top:1px solid #f3f5f3;min-height:67px}.entry-icon{width:40px;height:40px;border-radius:12px;flex-shrink:0;display:grid;place-items:center;font-size:18px;background:var(--tone,#eef6f0)}.entry-info{min-width:0;flex:1}.entry-category{font-weight:680;font-size:14px}.entry-note{color:var(--muted);font-size:12px;margin-top:4px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.entry-note.empty{opacity:.6}.entry-amount{font-weight:760;font-size:16px;white-space:nowrap;font-variant-numeric:tabular-nums}.entry-amount.income{color:var(--accent)}.entry-actions{display:flex;gap:1px;margin-left:3px}.entry-action{border:0;background:transparent;color:#819189;font-size:12px;border-radius:7px;padding:6px 7px}.entry-action:hover{background:#f1f5f2;color:#253d31}.empty-state{text-align:center;padding:51px 20px 58px;color:#87958e}.empty-illustration{height:59px;width:59px;background:#f1f8f4;color:#66a28b;margin:0 auto 14px;border-radius:19px;display:grid;place-items:center;font-size:30px}.empty-state strong{display:block;color:#52685b;font-size:14px;margin-bottom:7px}.empty-state p{font-size:12px;margin:0 0 20px}.mini-btn{border:0;border-radius:10px;background:#e7f5ee;color:#17795e;font-weight:720;padding:9px 13px}
+  .category-panel .panel-body{padding-top:0}.ring-area{display:flex;align-items:center;justify-content:center;gap:24px;padding:20px 0 19px}.donut{width:146px;height:146px;border-radius:50%;background:#e9efeb;position:relative;flex:none}.donut:after{content:"";position:absolute;inset:26px;background:#fff;border-radius:50%}.donut-text{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;justify-content:center;align-items:center}.donut-text span{color:#83918a;font-size:11px}.donut-text strong{font-size:15px;font-weight:760;margin-top:3px}.chart-info{color:var(--muted);font-size:12px;line-height:1.9;max-width:130px}.chart-info b{display:block;font-size:16px;color:var(--ink);font-weight:750}.category-list{display:flex;flex-direction:column;gap:15px;padding:3px 0 8px}.category-row{display:grid;grid-template-columns:10px minmax(40px,1fr) auto;gap:10px;align-items:center;font-size:13px}.dot{width:10px;height:10px;border-radius:50%}.category-name{font-weight:610}.category-value{font-variant-numeric:tabular-nums;font-weight:710}.percent{color:var(--muted);font-size:11px;margin-left:8px;display:inline-block;min-width:40px;text-align:right}.meter{grid-column:2 / 4;height:6px;background:#f1f4f1;border-radius:6px;overflow:hidden;margin-top:-4px}.meter span{display:block;height:100%;border-radius:5px}.category-empty{text-align:center;color:#91a098;padding:31px 0;font-size:12px}.tip{display:flex;gap:9px;align-items:flex-start;margin:14px 3px 2px;color:#85938c;font-size:12px;line-height:1.7}.tip svg{flex:none;margin-top:3px}.footer{font-size:12px;color:#91a098;text-align:center;margin-top:26px;line-height:1.8}.fab{display:none}
+  .storage-banner{background:#fff4df;color:#7a4b13;border:1px solid #efce90;border-radius:12px;padding:12px 16px;margin:0 0 17px;font-size:13px;line-height:1.7}.storage-banner strong{font-weight:760}.storage-banner.danger{background:#fff0ee;color:#93352f;border-color:#e7aca4}
+  .overlay{position:fixed;inset:0;z-index:100;background:rgba(15,35,27,.48);backdrop-filter:blur(3px);display:flex;justify-content:center;align-items:center;padding:16px}.modal{width:min(100%,510px);max-height:min(92vh,840px);overflow:auto;background:white;border-radius:23px;box-shadow:0 22px 80px #0e2b2366;padding:23px 25px 25px;overscroll-behavior:contain}.modal-hd{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:18px}.modal-hd h2{font-size:19px;margin:0}.close-btn{border:0;background:#f4f6f4;color:#718078;width:33px;height:33px;border-radius:10px;font-size:20px}.type-switch{display:flex;background:#f2f5f2;border-radius:12px;padding:4px;gap:4px;margin-bottom:20px}.type-switch button{width:50%;border:0;background:transparent;padding:10px;font-weight:700;color:#8a9b91;border-radius:10px}.type-switch button.active{background:white;color:#18765c;box-shadow:0 2px 7px #0000000e}.field-label{display:block;font-size:12px;color:#6f8177;font-weight:710;margin-bottom:9px}.amount-wrap{position:relative;margin-bottom:21px}.amount-symbol{position:absolute;left:16px;top:12px;color:#637f70;font-size:25px;font-weight:700}.amount-input{width:100%;border:1px solid #e0ebe4;background:#f9fbf9;border-radius:13px;padding:8px 15px 8px 46px;height:65px;font-size:31px;font-weight:740;letter-spacing:-.3px;color:var(--ink)}.amount-input:focus{outline:0;border-color:#62b796;background:white}.category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:19px}.category-pick{display:flex;align-items:center;flex-direction:column;gap:7px;border:1px solid #edf2ee;border-radius:12px;padding:12px 0 10px;background:#fafcfb;font-size:12px;color:#5d7066;font-weight:550}.category-pick .cat-symbol{font-size:20px}.category-pick.active{border-color:#76bfa3;background:#edfaf2;color:#117858;font-weight:750}.form-row{display:grid;grid-template-columns:1fr 1.3fr;gap:12px}.field{width:100%;border-radius:11px;border:1px solid #e2eae5;padding:12px;background:#fff;color:var(--ink);font-size:14px;min-width:0}.field:focus{border-color:#83c9af;outline:0}.form-error{min-height:20px;color:#d14f47;font-size:12px;margin-top:9px}.form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:15px}.settings-section{padding:16px 0;border-top:1px solid #edf2ee}.settings-section:first-of-type{padding-top:0;border-top:0}.settings-section h3{font-size:14px;margin:0 0 7px}.settings-section p{font-size:12px;color:#718278;line-height:1.8;margin:0 0 12px}.setting-buttons{display:flex;flex-wrap:wrap;gap:9px}.outline-btn{font-size:12px}.danger{color:#bc594a;border-color:#f0d7d0}.danger:hover{background:#fff2ef}.notice{background:#f5f8f6;color:#667a6f;border-radius:11px;padding:12px 14px;line-height:1.75;font-size:12px}.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,140%);transition:transform .22s;z-index:150;max-width:calc(100vw - 28px);background:#203d31;color:white;padding:12px 18px;border-radius:12px;box-shadow:0 8px 24px #0003;font-size:13px;text-align:center}.toast.show{transform:translate(-50%,0)}
+  @media(max-width:790px){.app{padding:19px 16px 105px}.dashboard{grid-template-columns:1fr}.category-panel{order:2}.header{margin-bottom:25px}.heading{font-size:22px}.summary{padding:23px 22px}.summary-detail{gap:25px}.sum-main{font-size:35px}.head-actions .export-header{display:none}.fab{position:fixed;z-index:20;bottom:calc(22px + env(safe-area-inset-bottom));right:22px;display:flex;align-items:center;justify-content:center;border:0;width:60px;height:60px;border-radius:19px;color:#fff;background:var(--accent);font-size:31px;box-shadow:0 9px 23px #0064434f}.desktop-add{display:none}.ring-area{justify-content:flex-start;gap:30px}.modal{max-height:94dvh}}
+  @media(max-width:480px){.app{padding:18px 12px 100px}.header{padding:0 3px}.brand-desc{font-size:11px}.brand-name{font-size:20px}.brand-icon{height:39px;width:39px;border-radius:12px}.head-actions .ghost-btn{font-size:12px;padding:8px 10px;min-height:36px}.topline{align-items:flex-start}.heading{font-size:20px}.subheading{font-size:11px}.month-switch{gap:2px}.month-label{min-width:82px;font-size:13px}.today-btn{display:none}.icon-btn{width:32px;height:32px;border-radius:9px}.summary{border-radius:20px;padding:21px 20px}.sum-main{font-size:34px}.summary-detail{gap:22px}.summary-detail>div{min-width:100px}.summary-detail strong{font-size:16px}.panel-head{padding:19px 16px 12px}.toolbar{padding:0 16px 14px}.search-wrap{min-width:130px}.filters{width:100%;justify-content:space-between}.filter-btn{flex:1}.entry{padding:12px 14px;gap:9px}.entry-icon{width:36px;height:36px}.entry-amount{font-size:14px}.entry-actions{flex-direction:column;gap:0;margin-left:0}.entry-action{padding:2px 4px}.day-heading{padding-left:15px;padding-right:15px}.panel-body{padding:18px}.modal{border-radius:20px;padding:20px 16px}.overlay{padding:9px}.category-grid{gap:7px}.category-pick{padding:10px 0;font-size:11px}.form-row{grid-template-columns:1fr}.footer{font-size:11px}}
+  @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+  /* V1.0.2: equal-visibility monthly income, spending and balance cards */
+  .money-cards{display:grid;grid-template-columns:1.08fr 1fr 1fr;gap:14px}.money-card{border-radius:22px;padding:23px 22px 20px;background:#fff;border:1px solid var(--border);box-shadow:var(--shadow);min-width:0;min-height:166px;display:flex;flex-direction:column;justify-content:space-between}.money-card-top{display:flex;justify-content:space-between;gap:10px;align-items:center;font-size:14px;font-weight:740}.money-card .stat-hint{font-size:11px;color:#91a39a;font-weight:520;white-space:nowrap}.stat-glyph{font-size:18px;vertical-align:-1px;padding-right:2px}.money-card .money-value{display:block;font-size:clamp(23px,2.55vw,31px);letter-spacing:-.8px;font-variant-numeric:tabular-nums;margin-top:13px;overflow-wrap:anywhere;line-height:1.25}.money-card.income-card .money-value{color:#157f62}.money-card.expense-card .money-value{color:#a75d46}.money-card .money-caption{font-size:12px;line-height:1.45;color:#e2f3e9;margin:12px 0 0}.net-card{background:linear-gradient(120deg,#153d32,#1a7156);color:white;position:relative;overflow:hidden;border:0;box-shadow:0 13px 34px #16493922}.net-card:after{content:"";position:absolute;width:200px;height:200px;border:1px solid #ffffff1c;border-radius:50%;right:-75px;top:-100px;pointer-events:none}.net-card .stat-hint{color:#c6e1d4}.net-card .money-value{font-size:clamp(27px,2.8vw,35px)}.net-card.negative .money-value{color:#ffe2d2}.card-bottom{display:flex;justify-content:space-between;gap:7px;align-items:center;margin-top:13px;color:#819189;font-size:11px}.card-quick{border:1px solid #cde7d9;color:#12765b;background:#f0faf5;border-radius:9px;padding:7px 10px;font-size:11px;font-weight:730;white-space:nowrap}.card-quick:hover{background:#ddf4e8}.expense-card .card-quick{color:#985742;border-color:#f1ddce;background:#fff7f2}.expense-card .card-quick:hover{background:#fff0e4}.balance-note{color:#8a9990;font-size:11px;margin:11px 2px 0;line-height:1.5}
+  .overview{margin-top:22px}.overview-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:0 2px 14px}.count-tag{background:#e7f2eb;color:#367c60;border-radius:20px;padding:7px 12px;white-space:nowrap;font-size:12px;font-weight:650}.metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.metric-card{background:white;border-radius:15px;border:1px solid var(--border);padding:17px 18px 16px;min-width:0;display:flex;flex-direction:column;gap:8px}.metric-card>span{font-size:12px;color:#7b8c82}.metric-card strong{font-size:21px;line-height:1.25;font-weight:760;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}.metric-card small{font-size:11px;color:#9aa89e;line-height:1.45}.overview-insight{margin-top:12px;background:#eaf4ee;border:1px solid #dcece2;color:#43725d;border-radius:13px;padding:12px 16px;font-size:12px;line-height:1.7}
+  .analysis-tabs{display:flex;gap:6px;margin:0 22px 2px;background:#f2f6f3;border-radius:11px;padding:4px}.analysis-tab{border:0;background:transparent;color:#798c7f;flex:1;padding:9px 10px;border-radius:8px;font-size:12px;font-weight:650}.analysis-tab.active{background:white;color:#167b5f;box-shadow:0 1px 5px #24433614}.ring-area{gap:17px}.category-panel .ring-area .donut{width:132px;height:132px}.category-panel .ring-area .donut:after{inset:24px}.category-panel .chart-info{max-width:125px}.category-panel .chart-info span{display:block}.category-panel .category-value{white-space:nowrap}.category-panel .category-row{grid-template-columns:10px minmax(40px,1fr) auto}
+  .trends-panel{margin-top:20px}.trend-head{align-items:center}.trend-legend{display:flex;gap:14px;align-items:center;color:#7a8b81;font-size:12px}.trend-legend span{display:flex;align-items:center;gap:5px}.legend-dot{width:9px;height:9px;border-radius:3px;display:inline-block}.legend-income{background:#36947a}.legend-expense{background:#e1a080}.trend-body{padding:14px 24px 20px}.trend-chart{height:205px;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;align-items:end;background:repeating-linear-gradient(to top, #ebf0ec 0px, #ebf0ec 1px,transparent 1px,transparent 45px);border-bottom:1px solid #dde7e0;padding-top:12px}.trend-group{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;min-width:0}.trend-bars{height:154px;width:100%;max-width:92px;display:flex;align-items:flex-end;justify-content:center;gap:7px}.trend-bar{width:33%;min-width:5px;max-width:27px;border-radius:5px 5px 0 0;transition:height .2s;min-height:0}.trend-bar.income{background:#36947a}.trend-bar.expense{background:#e1a080}.trend-label{font-size:11px;color:#7e9085;margin-bottom:6px;white-space:nowrap}.trend-group.selected .trend-label{color:#167b5f;font-weight:760}.toast:not(.show){visibility:hidden}.trend-footer{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:14px;color:#8a9991;font-size:11px}
+  @media(max-width:900px){.money-cards{grid-template-columns:1fr 1fr}.net-card{grid-column:span 2;min-height:145px}.money-card .money-value{font-size:28px}.metric-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(max-width:550px){.money-cards{gap:10px}.money-card{padding:16px 14px;border-radius:17px;min-height:143px}.net-card{padding:19px 17px;min-height:138px}.money-card-top{font-size:12px;display:block}.money-card .stat-hint{display:block;margin-top:3px}.money-card .money-value{font-size:clamp(17px,5.1vw,24px);letter-spacing:-.6px}.net-card .money-value{font-size:clamp(27px,8vw,36px)}.card-bottom{flex-direction:column;align-items:flex-start;gap:8px}.card-quick{width:100%;padding:8px 6px}.metric-grid{gap:9px}.metric-card{padding:13px 12px;border-radius:13px}.metric-card strong{font-size:18px}.overview-insight{font-size:11px;padding:11px 12px}.category-panel .ring-area .donut{width:125px;height:125px}.category-panel .ring-area .donut:after{inset:23px}.trend-head{align-items:flex-start;flex-wrap:wrap}.trend-body{padding:10px 12px 18px}.trend-chart{gap:3px;height:180px}.trend-bars{height:135px;gap:4px}.trend-label{font-size:10px}.trend-footer{font-size:10px}.trend-legend{gap:10px}}
+
+
+/* V1.0.3: Annual reporting, purchase channels, readable chart labels */
+.channel-tag{color:#277e67;font-weight:620}
+.channel-field{margin:-2px 0 18px}.channel-field .field{display:block;width:100%;min-height:43px}.channel-field select{background:#f9fbf9}.channel-field .custom-channel{margin-top:9px}.field-hint{margin:7px 0 0;color:#8c9a90;font-size:11px;line-height:1.5}
+.trend-head-right{display:flex;flex-direction:column;gap:10px;align-items:flex-end}.trend-nav{display:flex;align-items:center;gap:6px}.trend-nav .icon-btn{width:30px;height:30px;font-size:20px}.trend-nav .outline-btn{padding:6px 9px;min-height:30px;font-size:11px}.trend-period{font-size:11px;font-weight:650;color:#627b6d;min-width:136px;text-align:center}.trend-chart{height:230px;align-items:stretch;padding-top:10px}.trend-group{appearance:none;border:0;background:transparent;padding:0;display:flex;cursor:pointer;color:inherit;border-radius:8px;min-width:0;justify-content:flex-end}.trend-group:hover,.trend-group:focus-visible{background:#eef7f1}.trend-group.selected{background:#f1f9f4}.trend-values{height:40px;min-height:40px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;width:100%;overflow:visible}.trend-value{font-weight:710;font-variant-numeric:tabular-nums;font-size:11px;line-height:1.1;white-space:nowrap}.trend-value.income{color:#258267}.trend-value.expense{color:#bf7960}.trend-bars{height:141px}.trend-focus{display:block;font-size:12px;color:#2e6452;font-weight:680}.trend-footer{display:block;line-height:1.75}
+.annual-section{margin-top:30px}.annual-heading{display:flex;justify-content:space-between;gap:15px;align-items:center;margin-bottom:14px}.annual-cards{display:grid;grid-template-columns:1.08fr 1fr 1fr;gap:13px}.annual-money{min-width:0;border-radius:17px;border:1px solid var(--border);background:#fff;padding:20px 19px;display:flex;flex-direction:column;gap:11px}.annual-money>span{font-weight:730;font-size:13px;color:#6a8272}.annual-money strong{font-variant-numeric:tabular-nums;font-size:clamp(21px,2.4vw,30px);font-weight:780;overflow-wrap:anywhere;line-height:1.3}.annual-money small{font-size:11px;color:#8b9c90}.annual-money:not(.annual-balance) strong{color:#177b60}.annual-money:last-child strong{color:#a65f4c}.annual-balance{background:#eef7f0;border-color:#d9ebdd}.annual-balance strong{color:#185840}.annual-balance.negative strong{color:#b45443}
+.annual-breakdowns{margin-top:15px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;align-items:start}.yearly-panel .panel-body{padding-top:3px}.annual-donut-area{display:flex;align-items:center;gap:22px;margin-bottom:14px}.annual-donut{width:126px;height:126px;flex-shrink:0}.annual-donut:after{inset:24px}.annual-headline{font-size:13px;line-height:1.7;color:#6e8477;flex:1}.yearly-panel .category-row{grid-template-columns:10px minmax(45px,1fr) auto}.yearly-panel .category-value{white-space:nowrap}
+.channel-panel{margin-top:16px}.channel-head{align-items:center}.channel-scope{margin:0;width:190px;flex-shrink:0}.channel-body{display:grid;grid-template-columns:minmax(170px,.7fr) minmax(0,1.3fr);gap:24px;padding:5px 24px 14px;align-items:start}.channel-summary{display:flex;align-items:center;gap:15px}.channel-summary-copy{font-size:12px;line-height:1.7;color:#7b8d80;min-width:0}.channel-summary-copy strong{display:block;color:#28473a;font-size:17px;margin-top:5px;overflow-wrap:anywhere}.channel-summary-copy p{margin:4px 0 0}.channel-list{padding-top:8px}.channel-note{padding:0 24px 18px;font-size:11px;color:#899b8f;line-height:1.7;margin:0}
+@media(max-width:900px){.annual-breakdowns{grid-template-columns:1fr 1fr}.annual-donut-area{gap:12px}.annual-donut{width:108px;height:108px}.annual-donut:after{inset:21px}.channel-body{grid-template-columns:1fr}.channel-summary{justify-content:center}.trend-head-right{align-items:flex-start}}
+@media(max-width:700px){.annual-breakdowns{grid-template-columns:1fr}.channel-body{gap:10px}.channel-summary{justify-content:flex-start}}
+@media(max-width:550px){.annual-heading{flex-wrap:wrap;align-items:flex-start}.annual-heading .month-switch{margin-left:auto}.annual-cards{grid-template-columns:1fr 1fr;gap:9px}.annual-balance{grid-column:1/-1}.annual-money{padding:15px 13px;gap:7px}.annual-money strong{font-size:20px}.annual-balance strong{font-size:27px}.trend-nav{width:100%}.trend-head-right{width:100%;align-items:flex-start}.trend-period{min-width:108px;font-size:10px}.trend-chart{height:210px;gap:1px}.trend-values{height:35px;min-height:35px;gap:4px}.trend-value{font-size:9px;letter-spacing:-.35px}.trend-bars{height:130px}.trend-group{gap:4px}.trend-label{font-size:10px}.channel-head{align-items:flex-start;flex-wrap:wrap}.channel-scope{width:100%;max-width:230px}.channel-body{padding:2px 15px 12px}.channel-note{padding:0 15px 16px}.category-row .percent{margin-left:5px}.annual-breakdowns{gap:12px}}
+/* V1.0.6.1 · linked refunds, same visual language */
+.entry-paid{font-size:11px;color:#9a8976;margin-top:4px;white-space:nowrap}
+.entry-amount-wrap{text-align:right;flex-shrink:0}
+.entry-amount-wrap .entry-amount{line-height:1.4}
+.entry-actions{flex-wrap:wrap;justify-content:flex-end}
+.entry-action.refund-trigger{color:#187f65;font-weight:700}
+.refund-details{margin:0 22px 10px 74px;border:1px solid #e0efe7;background:#f7fbf8;border-radius:11px;color:#567568;font-size:12px;overflow:hidden}
+.refund-details summary{cursor:pointer;padding:10px 12px;font-weight:680;line-height:1.5;list-style-position:inside}
+.refund-details summary:hover{background:#eaf6ef}
+.refund-detail-line{display:flex;gap:8px;align-items:center;justify-content:space-between;padding:8px 12px;border-top:1px solid #e7f1eb;flex-wrap:wrap}
+.refund-detail-copy{min-width:0;flex:1;overflow-wrap:anywhere}
+.refund-detail-controls{display:flex;gap:4px;align-items:center}
+.refund-detail-controls button{padding:5px 6px}
+.refund-source{background:#eef7f0;padding:12px 14px;border-radius:12px;color:#386c54;line-height:1.7;font-size:13px;margin:0 0 20px}
+.refund-policy{font-size:11px;color:#7d9184;line-height:1.7;margin:0 0 12px}
+@media(max-width:550px){.entry{flex-wrap:wrap;gap:9px;padding:13px 14px}.entry-icon{width:36px;height:36px}.entry-actions{width:100%;justify-content:flex-end;margin:0}.entry-actions .entry-action{padding:7px 10px;background:#f5f8f5}.entry-amount-wrap{max-width:45%}.refund-details{margin-left:14px;margin-right:14px}.refund-detail-line{align-items:flex-start}}
+
+/* V1.0.6.1: extension modules follow the V1.0.5 visual language */
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:19px}.feature-body{padding:0 22px 20px}.feature-grid .panel-head{padding-bottom:13px}.quick-list{display:flex;gap:8px;flex-wrap:wrap}.quick-pill{border:1px solid #d5ebdf;background:#f1f8f3;padding:10px 14px;border-radius:12px;color:#277459;text-align:left;min-width:100px}.quick-pill strong{display:block;font-size:13px}.quick-pill small{color:#709688;font-size:11px}.feature-empty{color:#88988e;font-size:12px;background:#f8faf8;border:1px dashed #e6eee9;border-radius:12px;padding:16px}.budget-bar{height:10px;border-radius:7px;background:#edf3ee;overflow:hidden;margin:10px 0 7px}.budget-bar span{display:block;height:100%;border-radius:7px;background:#399b78}.budget-bar span.over{background:#d67c69}.budget-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:13px}.budget-top strong{font-size:18px}.budget-sub{font-size:12px;color:#82948a}.budget-mini{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:11px}.budget-mini>div{padding:8px 9px;background:#f7faf8;border-radius:10px;font-size:11px}.recurring-panel{margin-top:17px}.recurring-strip{padding:0 22px 18px;display:flex;gap:9px;flex-wrap:wrap}.due-card{border:1px solid #e6eee8;background:#fbfcfb;border-radius:12px;padding:11px 13px;display:flex;align-items:center;gap:12px;flex:1 1 260px;justify-content:space-between;min-width:0}.due-card strong{display:block;font-size:13px}.due-card small{color:#87998d;font-size:11px;display:block;margin-top:4px}.due-card .outline-btn{min-height:30px;padding:5px 9px;white-space:nowrap}.due-card.done{background:#f0f8f2}.advanced-filters{padding:0 22px 16px;border-top:1px solid #f1f3f1}.advanced-filters-hd{display:flex;gap:12px;align-items:center;margin:13px 0 10px}.advanced-filters-hd strong{font-size:12px;color:#4a6656}.advanced-filters-hd span{color:#9aa79e;font-size:11px;flex:1}.text-btn{border:0;background:transparent;color:#128166;font-size:12px;font-weight:700;padding:7px 2px}.text-btn:hover{text-decoration:underline}.filter-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}.filter-grid label,.range-dates label{font-size:11px;color:#79877c;font-weight:650}.filter-grid input,.filter-grid select{display:block;margin-top:4px;width:100%;border:1px solid #e3ece5;border-radius:9px;height:35px;background:#fafcfb;padding:5px 8px;color:#354b3f;min-width:0;font:inherit}.range-dates{display:contents}.range-dates label{min-width:0}.filter-result{font-size:11px;color:#87978d;margin-top:9px}.split-toggle{width:100%;margin:4px 0 13px;border-style:dashed}.split-box{padding:15px;border-radius:12px;background:#f7fbf8;border:1px solid #e4efe7;margin:8px 0 13px}.split-head{display:flex;justify-content:space-between;gap:8px;align-items:center;margin-bottom:8px}.split-head strong{font-size:13px}.split-row{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) auto;gap:8px;margin:9px 0}.split-row .split-note{grid-column:1 / -1;background:#fbfdfb}.derived-amount{background:#f4faf6!important;cursor:default}.business-budget-note{margin-top:9px}.due-actions{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end}.split-row select,.split-row input,.budget-row select,.budget-row input{min-width:0;width:100%;background:white;border:1px solid #e0eae3;border-radius:9px;padding:9px 7px;font:inherit}.split-row button,.budget-row button{border:0;background:#fbeee9;border-radius:9px;color:#ab705b;padding:0 10px}.split-total{color:#718879;font-size:12px;margin:11px 0 0}.split-total.error{color:#bc5548}.template-save{padding:10px 0 14px}.template-save .field{margin-top:8px;width:100%}.checkbox-label{display:flex;align-items:center;gap:8px;font-weight:650;color:#516b5e;font-size:12px}.manage-list{display:grid;gap:8px}.manage-row{border:1px solid #e8efeb;border-radius:11px;padding:10px 12px;display:flex;gap:8px;align-items:center;justify-content:space-between}.manage-row span{font-size:12px;color:#607a6d}.manage-row strong{display:block;font-size:13px}.manage-actions{display:flex;gap:5px;align-items:center}.manage-actions button{background:#f4f7f4;border:0;border-radius:8px;padding:7px 10px;font-size:12px;color:#5d7366}.manage-actions .danger-text{color:#b76b62}.budget-row{display:grid;grid-template-columns:1fr 110px 31px;gap:8px;margin:9px 0}.form-divider{height:1px;background:#e8eee9;margin:19px 0}.filter-grid select{max-width:100%}.entry-splits{color:#5a9377}.entry-breakdown{padding:7px 13px;background:#f6faf7;border-radius:9px;margin:0 0 9px 0;font-size:11px;line-height:1.8;color:#688776}.split-label{border:1px solid #bde0cf;background:#eaf7ee;color:#378665;border-radius:7px;padding:2px 5px;font-size:10px;margin-left:4px}.budget-over{color:#b96853}.template-note{font-size:11px;color:#8c9d93}.head-actions{flex-wrap:wrap;justify-content:flex-end}
+@media(max-width:900px){.feature-grid{grid-template-columns:1fr}}
+@media(max-width:550px){.feature-grid{gap:10px}.feature-body{padding:0 14px 14px}.recurring-strip{padding:0 14px 14px}.advanced-filters{padding:0 14px 14px}.filter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.advanced-filters-hd{flex-wrap:wrap}.advanced-filters-hd span{order:3;flex-basis:100%}.split-row{grid-template-columns:1fr 90px 28px}.budget-row{grid-template-columns:1fr 87px 28px}.manage-row{flex-wrap:wrap}.head-actions #categoryManageBtn{font-size:11px;padding:7px 9px}}
+
+  /* PWA v1.1.0: only installation, offline and update UI; business layout remains unchanged. */
+  .pwa-banner{display:flex;gap:12px;align-items:center;justify-content:space-between;margin:-2px 0 16px;padding:12px 15px;background:#e8f5ee;border:1px solid #b6ddc8;border-radius:14px;color:#244e3e;font-size:13px;line-height:1.5}
+  .pwa-banner[hidden]{display:none!important}
+  .pwa-banner .pwa-banner-actions{display:flex;gap:7px;flex-shrink:0}
+  .pwa-mini{border:1px solid #c2dbc9;border-radius:9px;background:#fff;padding:7px 12px;min-height:38px;color:#165f4c;font-weight:650;cursor:pointer}
+  .pwa-mini.primary{background:#147e66;color:#fff;border-color:#147e66}
+  .pwa-status{display:grid;gap:9px;font-size:13px;line-height:1.55}
+  .pwa-status-line{display:flex;gap:9px;align-items:flex-start}
+  .pwa-status-dot{width:9px;height:9px;margin-top:6px;border-radius:50%;flex:none;background:#b3c0b8}
+  .pwa-status-dot.ok{background:#25936e}
+  .pwa-status-dot.warn{background:#d59c50}
+  .pwa-buttons{display:flex;gap:9px;flex-wrap:wrap;margin-top:11px}
+  .pwa-help{margin-top:11px!important;line-height:1.6}
+  @media(max-width:550px){.pwa-banner{align-items:flex-start;flex-direction:column;padding:11px 12px}.pwa-banner .pwa-banner-actions{width:100%}.pwa-mini{min-height:44px}.pwa-buttons>.outline-btn{min-height:44px}.modal{max-height:calc(100dvh - 25px)}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="header">
+ <div class="brand"><div class="brand-icon" aria-hidden="true">记</div><div><div class="brand-name">简记 <span style="font-size:11px;font-weight:500;color:#8d9e93">v1.1.0</span></div><div class="brand-desc">认真记下每一笔生活</div></div></div>
+ <div class="head-actions"><button type="button" class="ghost-btn export-header" id="csvHeaderBtn">导出表格</button><button type="button" class="ghost-btn" id="categoryManageBtn">分类管理</button><button type="button" class="ghost-btn" id="settingsBtn">备份与设置</button><button type="button" class="primary-btn desktop-add" id="addHeaderBtn"><span class="plus">＋</span>记一笔</button></div>
+</header>
+<div id="storageBanner" class="storage-banner hidden" role="alert"></div>
+<div class="pwa-banner" id="pwaUpdateBanner" role="status" hidden>
+  <span id="pwaUpdateMessage">发现新的简记版本。请先保存正在填写的记录，再更新应用。</span>
+  <span class="pwa-banner-actions"><button class="pwa-mini primary" id="pwaApplyUpdate" type="button">更新应用</button><button class="pwa-mini" id="pwaDismissUpdate" type="button">稍后</button></span>
+</div>
+<section aria-label="月度概况">
+ <div class="topline"><div><h1 class="heading">我的收支</h1><p class="subheading">收入、支出与结余，按月看得更清楚</p></div><div class="month-switch"><button type="button" class="icon-btn" id="prevMonthBtn" aria-label="上个月">‹</button><span id="monthLabel" class="month-label"></span><button type="button" class="icon-btn" id="nextMonthBtn" aria-label="下个月">›</button><button type="button" class="outline-btn today-btn" id="thisMonthBtn">本月</button></div></div>
+ <div class="money-cards">
+  <article class="money-card net-card"><div class="money-card-top"><span><span class="stat-glyph">◎</span> <span data-monthword>本月</span>结余</span><span class="stat-hint">收入 − 支出</span></div><strong class="money-value" id="totalBalance">¥0.00</strong><p class="money-caption" id="balanceStatus">记录日常收支，了解这个月的结余</p></article>
+  <article class="money-card income-card"><div class="money-card-top"><span><span class="stat-glyph">↗</span> <span data-monthword>本月</span>收入</span><span class="stat-hint">流入合计</span></div><strong class="money-value" id="totalIncome">¥0.00</strong><div class="card-bottom"><span id="incomeSubtext">0 笔收入记录</span><button type="button" class="card-quick" id="quickIncomeBtn">＋ 记收入</button></div></article>
+  <article class="money-card expense-card"><div class="money-card-top"><span><span class="stat-glyph">↘</span> <span data-monthword>本月</span>支出</span><span class="stat-hint">流出合计</span></div><strong class="money-value" id="totalExpense">¥0.00</strong><div class="card-bottom"><span id="expenseSubtext">0 笔支出记录</span><button type="button" class="card-quick" id="quickExpenseBtn">＋ 记支出</button></div></article>
+ </div>
+ <div class="balance-note">本月结余为收入减去退款冲减后的净支出；退款归属原消费月份，不计入收入，也不代表实际账户余额。</div>
+</section>
+<section class="overview" aria-label="本月收支概况">
+ <div class="overview-title"><div><h2 class="panel-title"><span data-monthword>本月</span>收支概况</h2><p class="panel-desc">简单看懂这个月的收支情况</p></div><div class="count-tag" id="recordCount">0 笔记账</div></div>
+ <div class="metric-grid">
+  <div class="metric-card"><span>收入笔数</span><strong id="incomeCount">0 笔</strong><small>按所选月份统计</small></div>
+  <div class="metric-card"><span>支出笔数</span><strong id="expenseCount">0 笔</strong><small>按所选月份统计</small></div>
+  <div class="metric-card"><span>日均支出</span><strong id="expenseAvg">¥0.00</strong><small id="avgHint">按当月已过自然日</small></div>
+  <div class="metric-card"><span>结余率</span><strong id="savingsRate">—</strong><small>结余 ÷ 收入 · 无收入不计算</small></div>
+ </div>
+ <div class="overview-insight" id="overviewInsight">记下第一笔收入或支出，开始积累自己的收支记录。</div>
+</section>
+
+<section class="feature-grid" aria-label="便捷记账与预算">
+ <article class="panel quick-panel"><div class="panel-head"><div><h2 class="panel-title">⚡ 快捷记账</h2><p class="panel-desc">收藏常用组合，点击模板只需填写金额</p></div><button class="outline-btn" type="button" id="manageTemplatesBtn">管理模板</button></div><div class="feature-body" id="templatesList"></div></article>
+ <article class="panel budget-panel"><div class="panel-head"><div><h2 class="panel-title">🎯 月度预算</h2><p class="panel-desc">只统计家庭预算 · 公司和副业单独核算</p></div><button class="outline-btn" type="button" id="manageBudgetBtn">设置预算</button></div><div class="feature-body" id="budgetSummary"></div></article>
+</section>
+<section class="panel recurring-panel" aria-label="固定周期账单"><div class="panel-head"><div><h2 class="panel-title">📅 固定周期支出</h2><p class="panel-desc">每月 / 每年生成待确认账单，只有确认支付才计入支出</p></div><button class="outline-btn" type="button" id="manageRecurringBtn">管理周期账单</button></div><div class="recurring-strip" id="recurringDueList"></div></section>
+<main class="dashboard">
+ <section class="panel"><div class="panel-head"><div><h2 class="panel-title">收支明细</h2><p class="panel-desc">记录可编辑、删除或办理退款；支持按消费平台搜索</p></div><button type="button" class="outline-btn" id="addSmallBtn">＋ 新增</button></div><div class="toolbar"><div class="search-wrap"><span class="search-icon" aria-hidden="true">⌕</span><input class="search" id="searchInput" type="search" placeholder="搜索备注、分类或消费平台" aria-label="搜索收支明细" maxlength="80" /></div><div class="filters" aria-label="按类型筛选"><button type="button" class="filter-btn active" data-filter="all">全部</button><button type="button" class="filter-btn" data-filter="expense">支出</button><button type="button" class="filter-btn" data-filter="income">收入</button></div></div><div class="advanced-filters"><div class="advanced-filters-hd"><strong>组合筛选</strong><span>仅影响下方流水，不改变汇总报表</span><button type="button" class="text-btn" id="resetFiltersBtn">重置筛选</button></div>
+<div class="filter-grid"><label>时间范围<select id="filterScope"><option value="month">所选月份</option><option value="all">全部月份</option><option value="range">指定日期</option></select></label><label>分类<select id="filterCategory"><option value="">全部分类</option></select></label><label>消费平台<select id="filterChannel"><option value="">全部渠道</option></select></label><label>最低金额<input type="number" id="filterMin" min="0" step="0.01" placeholder="不限"/></label><label>最高金额<input type="number" id="filterMax" min="0" step="0.01" placeholder="不限"/></label><div class="range-dates hidden" id="filterRange"><label>开始日期<input id="filterFrom" type="date"/></label><label>截止日期<input id="filterTo" type="date"/></label></div></div><div class="filter-result" id="filterResult"></div></div><div class="entries" id="entryList" aria-live="polite"></div></section>
+ <aside class="panel category-panel"><div class="panel-head analytics-head"><div><h2 class="panel-title" id="categoryTitle">支出分析</h2><p class="panel-desc" id="categorySubtitle">所选月份扣除退款后的支出金额与占比</p></div></div><div class="analysis-tabs" role="group" aria-label="切换收支分类统计"><button type="button" class="analysis-tab active" data-chart-mode="expense" aria-pressed="true">支出分类</button><button type="button" class="analysis-tab" data-chart-mode="income" aria-pressed="false">收入来源</button></div><div class="panel-body"><div class="ring-area"><div class="donut" id="donut"><div class="donut-text"><span id="donutCaption">支出合计</span><strong id="donutTotal">¥0</strong></div></div><div class="chart-info" id="categoryInfo">主要支出类别<b id="dominantCategory">暂无支出</b><span id="categoryInfoFoot">查看分类占比</span></div></div><div id="categoryList" class="category-list"></div><div class="tip"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 11v6m0-10v1"/></svg><span id="categoryFootnote">分类图统计所选月份全部支出，不受流水搜索和筛选影响。</span></div></div></aside>
+</main>
+<section class="panel trends-panel" aria-label="近六个月收支趋势">
+ <div class="panel-head trend-head"><div><h2 class="panel-title">六个月收支趋势</h2><p class="panel-desc">显示每月金额 · 点击月份切换月度账本，移入柱形查看精确数值</p></div><div class="trend-head-right"><div class="trend-legend"><span><i class="legend-dot legend-income"></i>收入</span><span><i class="legend-dot legend-expense"></i>支出</span></div><div class="trend-nav" aria-label="切换趋势统计区间"><button type="button" class="icon-btn" id="prevTrendBtn" aria-label="查看前六个月">‹</button><span id="trendPeriod" class="trend-period">六个月</span><button type="button" class="icon-btn" id="nextTrendBtn" aria-label="查看后六个月">›</button><button type="button" class="outline-btn" id="resetTrendBtn">回到所选月</button></div></div></div>
+ <div class="trend-body"><div class="trend-chart" id="trendChart" aria-label="最近六个月收入和支出对比柱状图"></div><div class="trend-footer" id="trendFooter">每组柱形分别对应当月收入和支出</div></div>
+</section>
+<section class="annual-section" id="annualSection" aria-label="年度收支总览">
+ <div class="annual-heading"><div><h2 class="heading" style="font-size:21px">年度收支总览</h2><p class="panel-desc">按自然年统计收入与扣除退款后的净支出，独立于流水筛选</p></div><div class="month-switch"><button type="button" class="icon-btn" id="prevYearBtn" aria-label="上一年">‹</button><span class="month-label" id="yearLabel">年度</span><button type="button" class="icon-btn" id="nextYearBtn" aria-label="下一年">›</button><button type="button" class="outline-btn today-btn" id="thisYearBtn">今年</button></div></div>
+ <div class="annual-cards">
+  <article class="annual-money annual-balance"><span>年度结余</span><strong id="yearBalance">¥0.00</strong><small>收入 − 支出</small></article>
+  <article class="annual-money"><span>年度收入</span><strong id="yearIncome">¥0.00</strong><small id="yearIncomeCount">0 笔收入</small></article>
+  <article class="annual-money"><span>年度支出</span><strong id="yearExpense">¥0.00</strong><small id="yearExpenseCount">0 笔支出</small></article>
+ </div>
+ <div class="annual-breakdowns">
+  <article class="panel yearly-panel"><div class="panel-head"><div><h3 class="panel-title">全年收入来源</h3><p class="panel-desc">每类收入金额与占本年收入比例</p></div></div><div class="panel-body"><div class="annual-donut-area"><div class="donut annual-donut" id="yearIncomeDonut"><div class="donut-text"><span>全年收入</span><strong id="yearIncomeDonutTotal">¥0</strong></div></div><p class="annual-headline" id="yearIncomeHeadline">暂无收入</p></div><div class="category-list" id="yearIncomeList"></div></div></article>
+  <article class="panel yearly-panel"><div class="panel-head"><div><h3 class="panel-title">全年支出分类</h3><p class="panel-desc">每类净支出金额与占本年支出比例</p></div></div><div class="panel-body"><div class="annual-donut-area"><div class="donut annual-donut" id="yearExpenseDonut"><div class="donut-text"><span>全年支出</span><strong id="yearExpenseDonutTotal">¥0</strong></div></div><p class="annual-headline" id="yearExpenseHeadline">暂无支出</p></div><div class="category-list" id="yearExpenseList"></div></div></article>
+ </div>
+ <section class="panel channel-panel" aria-label="消费渠道统计"><div class="panel-head channel-head"><div><h3 class="panel-title">消费平台 / 场所统计</h3><p class="panel-desc" id="channelScopeDescription">统计全年在京东、淘宝、盒马等平台和线下门店的支出</p></div><div class="analysis-tabs channel-scope" role="group" aria-label="消费渠道统计范围"><button type="button" class="analysis-tab" data-channel-scope="month" aria-pressed="false">所选月</button><button type="button" class="analysis-tab active" data-channel-scope="year" aria-pressed="true">所选年</button></div></div><div class="channel-body"><div class="channel-summary"><div class="donut annual-donut" id="channelDonut"><div class="donut-text"><span>渠道支出</span><strong id="channelDonutTotal">¥0</strong></div></div><div class="channel-summary-copy"><span>消费渠道统计</span><strong id="channelDominant">暂无记录</strong><p id="channelStat">可以在记支出时选择购买平台或消费场所</p></div></div><div class="category-list channel-list" id="channelList"></div></div><p class="channel-note" id="channelFootnote">消费分类与消费渠道分开统计；退款会冲减原消费月份、原分类和原渠道。</p></section>
+</section>
+<footer class="footer">简记 v1.1.0 · 无广告 · 无需注册 · 离线可用<br/><strong>正常模式下数据保存在当前设备浏览器中</strong>，无法跨设备同步；若浏览器禁止存储，将启用临时模式并自动下载 JSON 备份。</footer>
+</div>
+<button type="button" class="fab" id="fabBtn" aria-label="记一笔">＋</button>
+
+<div class="overlay hidden" id="entryOverlay" role="presentation"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="entryModalTitle"><div class="modal-hd"><h2 id="entryModalTitle">记一笔</h2><button type="button" class="close-btn" data-close="entry" aria-label="关闭">×</button></div><form id="entryForm" novalidate><div class="type-switch"><button type="button" data-entry-type="expense" class="active">支出</button><button type="button" data-entry-type="income">收入</button></div><label for="amountInput" class="field-label" id="amountLabel">金额（人民币）</label><div class="amount-wrap"><span class="amount-symbol">¥</span><input type="text" inputmode="decimal" autocomplete="off" id="amountInput" class="amount-input" placeholder="0.00" aria-label="金额" maxlength="14" required /></div><div id="singleCategoryField"><span class="field-label">选择分类</span><div id="categoryPicks" class="category-grid" role="group" aria-label="分类"></div></div><div id="channelField" class="channel-field"><label for="channelSelect" class="field-label">消费平台 / 场所</label><select id="channelSelect" class="field" aria-label="消费平台或场所"><option value="其他日常消费">其他日常消费</option></select><input type="text" id="customChannelInput" class="field hidden custom-channel" maxlength="30" placeholder="输入商家或平台名称（最多30字）" autocomplete="off" aria-label="自定义消费场所名称"/><p class="field-hint">分类记录买了什么；渠道记录在哪里买或付给谁。默认“其他日常消费”，也可以选择京东、盒马或自定义商家。</p></div><div class="form-row"><div><label for="dateInput" class="field-label">日期</label><input type="date" id="dateInput" class="field" required/></div><div><label for="noteInput" class="field-label">备注（选填）</label><input id="noteInput" class="field" placeholder="比如：午餐、买菜" maxlength="120" autocomplete="off" /></div></div><div class="split-box hidden" id="splitBox"><div class="split-head"><strong>拆分明细</strong><button type="button" class="text-btn" id="addSplitBtn">＋ 添加分类行</button></div><p class="field-hint">订单总金额由各明细金额自动汇总，不需要选择额外的总分类。每项可以填写用途备注；退款可精确关联明细。</p><div id="splitRows"></div><p id="splitTotalHint" class="split-total"></p></div><button type="button" class="outline-btn split-toggle" id="splitToggleBtn">＋ 开启拆分记账</button>
+<div class="template-save"><label class="checkbox-label"><input type="checkbox" id="saveTemplateCheck"/> 保存为快捷记账模板</label><input class="field hidden" maxlength="24" id="templateNameInput" placeholder="例如：盒马买菜、京东宝宝用品"/></div>
+<p class="field-hint" id="entryRefundHint"></p><div class="form-error" id="entryError" role="alert"></div><div class="form-actions"><button type="button" class="outline-btn" data-close="entry">取消</button><button class="primary-btn" type="submit" id="saveEntryBtn">保存记录</button></div></form></div></div>
+
+<div class="overlay hidden" id="refundOverlay" role="presentation"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="refundModalTitle"><div class="modal-hd"><h2 id="refundModalTitle">记录退款</h2><button type="button" class="close-btn" data-close="refund" aria-label="关闭">×</button></div><form id="refundForm" novalidate><p class="refund-source" id="refundSource">关联原消费</p><div id="refundSplitField" class="channel-field hidden"><label for="refundSplitSelect" class="field-label">退款对应的商品分类</label><select id="refundSplitSelect" class="field"></select><p class="field-hint" id="refundSplitHint">退款会冲减选中的商品类别。</p></div><label for="refundAmountInput" class="field-label">退款金额（人民币）</label><div class="amount-wrap"><span class="amount-symbol">¥</span><input type="text" inputmode="decimal" autocomplete="off" id="refundAmountInput" class="amount-input" placeholder="0.00" maxlength="14" required /></div><div class="form-row"><div><label for="refundDateInput" class="field-label">实际退款日期</label><input type="date" id="refundDateInput" class="field" required /></div><div><label for="refundNoteInput" class="field-label">备注（选填）</label><input type="text" id="refundNoteInput" class="field" placeholder="如：商品退货、差价退款" maxlength="120" autocomplete="off" /></div></div><p class="refund-policy">退款不算收入；从原消费的支出、分类和消费平台统计中扣除。跨月退款也归属原消费月份，实际到账日期仍会保留。</p><div class="form-error" id="refundError" role="alert"></div><div class="form-actions"><button type="button" class="outline-btn" data-close="refund">取消</button><button class="primary-btn" type="submit" id="saveRefundBtn">保存退款</button></div></form></div></div>
+<div class="overlay hidden" id="settingsOverlay" role="presentation"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle"><div class="modal-hd"><h2 id="settingsModalTitle">备份与设置</h2><button type="button" class="close-btn" data-close="settings" aria-label="关闭">×</button></div><div class="settings-section"><h3>导出我的数据</h3><p>JSON 保存本版工具的完整数据，可用于备份恢复；CSV 可用 Excel 打开；退款单独列为负金额，并保留实际退款日期及原消费归属日期。</p><div class="setting-buttons"><button type="button" class="outline-btn" id="exportJsonBtn">导出 JSON 备份</button><button type="button" class="outline-btn" id="exportCsvBtn">导出 CSV 表格</button></div></div><div class="settings-section"><h3>导入已有备份</h3><p><b>合并</b>：保留当前记录，按记录 ID 跳过重复；<b>覆盖恢复</b>：用备份内容完全替换当前记录。支持当前 V5 格式（含 V1.0.6.1）的 JSON 备份；退款信息包含在备份中。</p><div class="setting-buttons"><button type="button" class="outline-btn" id="mergeBtn">合并备份</button><button type="button" class="outline-btn" id="restoreBtn">覆盖恢复</button></div><input type="file" id="importFile" class="hidden" accept=".json,application/json" /></div><div class="settings-section"><h3>当前存储</h3><div id="storageInfo" class="notice"></div></div><div class="settings-section" id="pwaSettingsSection"><h3>手机安装与离线使用</h3>
+<div class="pwa-status" aria-live="polite">
+ <div class="pwa-status-line"><span class="pwa-status-dot" id="pwaOfflineDot"></span><span id="pwaOfflineStatus">正在检查离线资源……</span></div>
+ <div class="pwa-status-line"><span class="pwa-status-dot" id="pwaNetworkDot"></span><span id="pwaNetworkStatus">正在检查网络……</span></div>
+ <div class="pwa-status-line"><span class="pwa-status-dot" id="pwaInstallDot"></span><span id="pwaInstallStatus">可通过手机浏览器添加到桌面。</span></div>
+</div>
+<div class="pwa-buttons"><button type="button" id="pwaInstallBtn" class="outline-btn">添加到手机桌面</button><button type="button" id="pwaCheckUpdateBtn" class="outline-btn">检查程序更新</button></div>
+<p class="pwa-help" id="pwaHelpText">首次通过 HTTPS 打开后，建议先在线完成加载，再打开飞行模式测试离线启动。账目只保存在当前设备，清理网站数据可能删除账本；请定期下载 JSON 备份。</p>
+</div><div class="settings-section"><h3>清空本机账本及设置</h3><p>会清空本机的账目、预算、快捷模板、周期规则以及自定义分类。建议先导出完整 JSON 备份，删除后无法撤销。</p><button type="button" class="outline-btn danger" id="clearAllBtn">清空本机全部账本数据</button></div></div></div>
+
+<div class="overlay hidden" id="templatesOverlay"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="templatesTitle"><div class="modal-hd"><h2 id="templatesTitle">快捷记账模板管理</h2><button type="button" class="close-btn" data-close="templates">×</button></div><p class="field-hint">在「记一笔」时勾选“保存为快捷模板”即可新增；在这里可删除不再使用的模板。</p><div id="templatesManageList" class="manage-list"></div></div></div>
+<div class="overlay hidden" id="categoriesOverlay"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="categoriesTitle"><div class="modal-hd"><h2 id="categoriesTitle">自定义收支分类</h2><button type="button" class="close-btn" data-close="categories">×</button></div><div class="type-switch"><button id="catExpenseTab" type="button" class="active">支出分类</button><button id="catIncomeTab" type="button">收入分类</button></div><div class="form-row"><div><label class="field-label" for="newCatName">新增分类名称</label><input id="newCatName" maxlength="16" class="field" placeholder="例如：宠物"/></div><div><label class="field-label" for="newCatEmoji">图标（可选）</label><input id="newCatEmoji" maxlength="8" class="field" placeholder="📌"/></div></div><div class="form-actions" style="margin-bottom:15px"><button type="button" class="primary-btn" id="addCategoryBtn">＋ 新增分类</button></div><p class="field-hint">默认分类可隐藏；自定义分类可以修改、删除。已使用的分类不能删除，但可隐藏，历史记录仍会统计。</p><div id="categoryManageList" class="manage-list category-manage"></div></div></div>
+<div class="overlay hidden" id="budgetOverlay"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="budgetTitle"><div class="modal-hd"><h2 id="budgetTitle">设置月度预算</h2><button type="button" class="close-btn" data-close="budget">×</button></div><p class="field-hint" id="budgetMonthTip"></p><label class="field-label" for="budgetTotalInput">家庭总预算（元，不含公司/副业支出；留空表示不设总额）</label><input class="field" type="number" min="0" step="0.01" id="budgetTotalInput" placeholder="例如 5000"/><div class="split-head" style="margin-top:17px"><strong>分类预算</strong><button class="text-btn" type="button" id="addBudgetRowBtn">＋ 新增分类预算</button></div><div id="budgetRows"></div><p class="field-hint">家庭总预算仅计入家庭消费；公司支出、副业支出不占家庭预算，但仍计入全部收支报表。各分类预算可独立设置。</p><p class="form-error" id="budgetError"></p><div class="form-actions"><button class="outline-btn" type="button" id="copyBudgetBtn">复制上个月</button><button class="primary-btn" type="button" id="saveBudgetBtn">保存预算</button></div></div></div>
+<div class="overlay hidden" id="recurringOverlay"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="recurringTitle"><div class="modal-hd"><h2 id="recurringTitle">固定周期账单</h2><button type="button" class="close-btn" data-close="recurring">×</button></div><div id="recurringRulesList" class="manage-list"></div><div class="form-divider"></div><h3 id="ruleFormTitle" style="margin:5px 0 14px">新增周期账单</h3><form id="ruleForm" novalidate><label class="field-label" for="ruleName">账单名称</label><input class="field" id="ruleName" maxlength="32" placeholder="房租、社保、代理记账费" required/><div class="form-row"><div><label class="field-label" for="ruleAmount">金额（元）</label><input id="ruleAmount" class="field" type="number" min="0.01" step="0.01" required/></div><div><label class="field-label" for="ruleCategory">支出分类</label><select class="field" id="ruleCategory"></select></div></div><div class="form-row"><div><label class="field-label" for="ruleChannel">消费渠道</label><input id="ruleChannel" class="field" maxlength="30" value="直接缴费/转账"/></div><div><label class="field-label" for="ruleFrequency">重复周期</label><select class="field" id="ruleFrequency"><option value="monthly">每月</option><option value="yearly">每年</option></select></div></div><div class="form-row"><div><label class="field-label" for="ruleDay">每期几号</label><input id="ruleDay" class="field" type="number" min="1" max="31" value="1"/></div><div id="ruleMonthField" class="hidden"><label class="field-label" for="ruleMonth">每年几月</label><select class="field" id="ruleMonth"></select></div></div><div class="form-row"><div><label class="field-label" for="ruleStart">开始日期</label><input id="ruleStart" class="field" type="date"/></div><div><label class="field-label" for="ruleNote">备注（选填）</label><input id="ruleNote" class="field" maxlength="120" placeholder="例如：账单备注"/></div></div><p class="form-error" id="ruleError"></p><div class="form-actions"><button type="button" class="outline-btn" id="resetRuleBtn">清空表单</button><button type="submit" class="primary-btn" id="saveRuleBtn">保存周期账单</button></div></form></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(()=>{'use strict';
+const STORAGE_KEY='jianji.family-ledger.v5';
+let expenseCategories=[
+{id:'food',name:'餐饮',emoji:'🍜',color:'#dc9560',tone:'#fcf2e8'},
+{id:'groceries',name:'买菜',emoji:'🥬',color:'#6aa68a',tone:'#edf7ee'},
+{id:'daily',name:'日用',emoji:'🧻',color:'#84a9b6',tone:'#edf4f7'},
+{id:'baby',name:'宝宝',emoji:'🍼',color:'#c596ce',tone:'#f8eff8'},
+{id:'housing',name:'住房',emoji:'🏠',color:'#7c9dcd',tone:'#eef2fa'},
+{id:'transport',name:'交通',emoji:'🚗',color:'#d1a46f',tone:'#f8f2e9'},
+{id:'medical',name:'医疗',emoji:'💊',color:'#d97f82',tone:'#f9efef'},
+{id:'shopping',name:'购物',emoji:'🛍️',color:'#b395d3',tone:'#f5f0fa'},
+{id:'fun',name:'休闲',emoji:'🎮',color:'#9a9bca',tone:'#f3f2fa'},
+{id:'social',name:'人情',emoji:'🎁',color:'#d5a8a9',tone:'#fbf1f1'},
+{id:'bills',name:'缴费',emoji:'🧾',color:'#83aca4',tone:'#edf7f3'},
+{id:'company',name:'公司支出',emoji:'🏢',color:'#719aab',tone:'#ecf5f8'},
+{id:'side-expense',name:'副业支出',emoji:'📣',color:'#b79a68',tone:'#f9f3e7'},
+{id:'fuel',name:'加油',emoji:'⛽',color:'#d59f68',tone:'#fbf3e9'},
+{id:'charging',name:'充电',emoji:'⚡',color:'#80b3a0',tone:'#ecf7ef'},
+{id:'parking',name:'停车',emoji:'🅿️',color:'#7fa4b8',tone:'#edf5f9'},
+{id:'tickets',name:'车票/机票',emoji:'🎫',color:'#a3a4c9',tone:'#f2f2f9'},
+{id:'taxi',name:'打车',emoji:'🚕',color:'#d7b068',tone:'#faf5e8'},
+{id:'transit',name:'公交地铁',emoji:'🚇',color:'#77a7b4',tone:'#edf6f7'},
+{id:'tolls',name:'过路费',emoji:'🛣️',color:'#adad84',tone:'#f5f5eb'},
+{id:'car-care',name:'车辆保养',emoji:'🔧',color:'#8d9fae',tone:'#eef3f8'},
+{id:'takeout',name:'外卖',emoji:'🥡',color:'#dd9b7f',tone:'#fbf0eb'},
+{id:'clothes',name:'服饰鞋包',emoji:'👕',color:'#ad9fce',tone:'#f5f1fa'},
+{id:'electronics',name:'数码电器',emoji:'📱',color:'#739db7',tone:'#edf4f8'},
+{id:'rent',name:'房租房贷',emoji:'🏘️',color:'#80a4cd',tone:'#edf2f9'},
+{id:'utilities',name:'水电燃气',emoji:'💡',color:'#b3ac75',tone:'#f8f6e9'},
+{id:'phone',name:'话费网络',emoji:'📶',color:'#7caeb4',tone:'#edf7f8'},
+{id:'insurance',name:'保险',emoji:'🛡️',color:'#8ea4c2',tone:'#f0f4fa'},
+{id:'education',name:'学习教育',emoji:'📚',color:'#b28fbc',tone:'#f5eff7'},
+{id:'travel',name:'旅行住宿',emoji:'🧳',color:'#89afa0',tone:'#edf7f2'},
+{id:'beauty',name:'护肤美妆',emoji:'🧴',color:'#cba2ae',tone:'#fbf1f5'},
+{id:'courier',name:'快递物流',emoji:'📦',color:'#a89d79',tone:'#f8f4ec'},
+{id:'other',name:'其他',emoji:'📎',color:'#a3ada8',tone:'#f1f3f2'}];
+let incomeCategories=[
+{id:'salary',name:'工资',emoji:'💼',color:'#61a58c',tone:'#eaf7f0'},
+{id:'bonus',name:'奖金',emoji:'🎉',color:'#d3a86a',tone:'#fcf5e9'},
+{id:'sidejob',name:'副业',emoji:'💻',color:'#7ba2c7',tone:'#ecf2f9'},
+{id:'gift',name:'红包',emoji:'🧧',color:'#d37c7b',tone:'#faf0ef'},
+{id:'other-income',name:'其他',emoji:'📥',color:'#9da7a0',tone:'#f1f4f2'}];
+const builtinExpenseCats=expenseCategories.map(c=>({...c}));
+const builtinIncomeCats=incomeCategories.map(c=>({...c}));
+let allCat=new Map([...expenseCategories,...incomeCategories].map(c=>[c.id,c]));
+function rebuildCategories(){
+ expenseCategories=[...builtinExpenseCats,...state.customCategories.filter(c=>c.type==='expense')];
+ incomeCategories=[...builtinIncomeCats,...state.customCategories.filter(c=>c.type==='income')];
+ allCat=new Map([...expenseCategories,...incomeCategories].map(c=>[c.id,c]));
+}
+function catsFor(type,includeHidden=false,existing=''){
+ return (type==='expense'?expenseCategories:incomeCategories).filter(c=>includeHidden||!state.hiddenCategoryIds.includes(c.id)||c.id===existing);
+}
+function categorySpend(record,id){
+ if(record.type!=='expense')return record.categoryId===id?record.cents:0;
+ if(record.splits?.length){
+  const ids=record.splits.filter(x=>x.categoryId===id).map(x=>x.id);
+  return record.splits.filter(x=>ids.includes(x.id)).reduce((a,x)=>a+x.cents,0)-(record.refunds||[]).filter(x=>ids.includes(x.splitId)).reduce((a,x)=>a+x.cents,0);
+ }
+ return record.categoryId===id?netCents(record):0;
+}
+function categorySum(records,id){return records.reduce((a,r)=>a+categorySpend(r,id),0)}
+function splitDisplayName(record,splitId){
+ const i=(record.splits||[]).findIndex(x=>x.id===splitId);
+ if(i<0)return '未知拆分项';
+ const s=record.splits[i];return `第${i+1}项 · ${allCat.get(s.categoryId)?.name||'分类'}${s.note?' · '+s.note:''} · 原价 ${fmt(s.cents)}`;
+}
+function getBudget(month){return state.budgets[month]||{totalCents:0,categories:{}}}
+function recurringDue(rule,period){
+ if(!rule.enabled||period<rule.startDate.slice(0,7))return null;
+ const [yy,mm]=period.split('-').map(Number);
+ if(rule.frequency==='yearly'&&mm!==rule.month)return null;
+ if(rule.frequency==='monthly'&&period<rule.startDate.slice(0,7))return null;
+ const day=Math.min(rule.day,new Date(yy,mm,0).getDate());
+ const date=period+'-'+String(day).padStart(2,'0');
+ return date<rule.startDate?null:date;
+}
+
+const commonChannels=['京东','淘宝','拼多多','永辉','盒马','美团','抖音','线下超市','菜市场/摊位','便利店','餐厅/饭店','街边小店','其他线上平台','其他线下消费','直接缴费/转账','其他日常消费'];
+const channelColors=['#319479','#dba16e','#8f9fcd','#bda0c8','#7eaabd','#d28382','#bca979','#87b19e','#a592bd','#7f9aa8','#d6a57d','#99b6a6','#c8b0a1','#94a7bb'];
+function getChannel(r){return r.type==='expense'?r.channel:''}
+function refundedCents(r){return r.type==='expense'?(r.refunds||[]).reduce((a,x)=>a+x.cents,0):0}
+function netCents(r){return r.type==='expense'?r.cents-refundedCents(r):r.cents}
+function sumNet(records){return records.reduce((a,r)=>a+netCents(r),0)}
+
+const $=id=>document.getElementById(id);const moneyFmt=new Intl.NumberFormat('zh-CN',{style:'currency',currency:'CNY',minimumFractionDigits:2});
+const fmt= cents=>moneyFmt.format(cents/100);const fmtCompact=cents=>cents>=10000000 ? '¥'+(cents/1000000).toFixed(1)+'万' : '¥'+(cents/100).toLocaleString('zh-CN',{maximumFractionDigits:0});
+const today=()=>{const d=new Date();return [d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('-')};
+const monthToday=()=>today().slice(0,7);let viewMonth=monthToday();let viewYear=Number(monthToday().slice(0,4));let trendEndMonth=viewMonth;let channelScope="year";
+function dateForViewedMonth(){if(viewMonth===monthToday())return today();const [year,month]=viewMonth.split('-').map(Number);const desired=new Date().getDate();const last=new Date(year,month,0).getDate();return viewMonth+'-'+String(Math.min(desired,last)).padStart(2,'0')}let chartMode='expense';let filter='all';let query='';let filterScope='month',filterCategory='',filterChannel='',filterMin='',filterMax='',filterFrom='',filterTo='';let splitEnabled=false,splitRows=[],pendingRuleId=null,pendingRulePeriod=null,editingRuleId=null,manageCatType='expense';let entryType='expense';let entryCategory='food';let editingId=null;let importMode='merge';let toastTimer;let refundExpenseId=null,refundEditingId=null,refundSaving=false;
+const esc=s=>String(s).replace(/[&<>"']/g, x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
+function isDate(v){if(typeof v!=='string'|| !/^\d{4}-\d{2}-\d{2}$/.test(v))return false;const [y,m,d]=v.split('-').map(Number);const dt=new Date(y,m-1,d);return dt.getFullYear()===y&&dt.getMonth()===m-1&&dt.getDate()===d&&y>=1900&&y<=9999;}
+function validRefund(x,expenseDate){return x&&typeof x==='object'&&typeof x.id==='string'&&x.id.length>=1&&x.id.length<=90&&Number.isSafeInteger(x.cents)&&x.cents>0&&x.cents<=9999999999&&isDate(x.date)&&x.date>=expenseDate&&typeof x.note==='string'&&x.note.length<=120&&typeof x.createdAt==='string'&&typeof x.updatedAt==='string'&&(x.splitId===undefined||typeof x.splitId==='string')}
+function isCategoryType(id,type,catMap=allCat){
+ const item=catMap.get(id);
+ return Boolean(item && (item.type===type || (type==='expense'?builtinExpenseCats:builtinIncomeCats).some(c=>c.id===id)));
+}
+function validRecord(x,catMap=allCat){
+ if(!x||typeof x!=='object'||typeof x.id!=='string'||x.id.length<1||x.id.length>90||!['expense','income'].includes(x.type)||!Number.isSafeInteger(x.cents)||x.cents<=0||x.cents>9999999999||!isDate(x.date)||typeof x.note!=='string'||x.note.length>120||typeof x.channel!=='string'||x.channel.length>30||typeof x.createdAt!=='string'||typeof x.updatedAt!=='string')return false;
+ if(x.recurringId!==undefined&&(typeof x.recurringId!=='string'||!/^[\d]{4}-[\d]{2}$/.test(x.recurringPeriod||'')))return false;
+ if(x.type==='income')return isCategoryType(x.categoryId,'income',catMap)&&x.channel===''&&(!x.refunds||x.refunds.length===0)&&(!x.splits||x.splits.length===0);
+ if(!x.channel.trim()||(x.refunds!==undefined&&!Array.isArray(x.refunds))||(x.splits!==undefined&&!Array.isArray(x.splits)))return false;
+ const splits=x.splits||[],refunds=x.refunds||[],seenSplits=new Set();let splitSum=0;
+ if(splits.length){
+  if(splits.length<2||splits.length>100||x.categoryId!==null)return false;
+  for(const sp of splits){
+   if(!sp||typeof sp.id!=='string'||!sp.id||seenSplits.has(sp.id)||!Number.isSafeInteger(sp.cents)||sp.cents<=0||!isCategoryType(sp.categoryId,'expense',catMap)||typeof sp.note!=='string'||sp.note.length>60)return false;
+   seenSplits.add(sp.id);splitSum+=sp.cents;
+  }
+  if(splitSum!==x.cents)return false;
+ }else if(!isCategoryType(x.categoryId,'expense',catMap))return false;
+ const refundsBySplit=new Map(),seen=new Set();let total=0;
+ for(const r of refunds){
+  if(!validRefund(r,x.date)||seen.has(r.id))return false;
+  seen.add(r.id);total+=r.cents;if(total>x.cents)return false;
+  if(splits.length){
+   if(!r.splitId||!seenSplits.has(r.splitId))return false;
+   refundsBySplit.set(r.splitId,(refundsBySplit.get(r.splitId)||0)+r.cents);
+  }else if(r.splitId)return false;
+ }
+ if(splits.some(sp=>(refundsBySplit.get(sp.id)||0)>sp.cents))return false;
+ return true;
+}
+function validCustom(c){return c&&/^custom-[a-z0-9-]{8,}$/.test(c.id||'')&&['income','expense'].includes(c.type)&&typeof c.name==='string'&&c.name.trim().length>0&&c.name.length<=16&&typeof c.emoji==='string'&&c.emoji.length<=8&&typeof c.color==='string'&&/^#[0-9a-f]{6}$/i.test(c.color)&&typeof c.tone==='string'}
+function validTemplate(t,catMap){
+ if(!t||typeof t.id!=='string'||!t.id||typeof t.name!=='string'||!t.name.trim()||t.name.length>24||!['income','expense'].includes(t.type)||typeof t.channel!=='string'||t.channel.length>30||typeof t.note!=='string'||t.note.length>120)return false;
+ if(t.type==='income')return isCategoryType(t.categoryId,'income',catMap)&&!t.channel&&(!t.splits||!t.splits.length);
+ if(!t.channel.trim())return false;
+ if(t.splits?.length)return t.categoryId===null&&Array.isArray(t.splits)&&t.splits.length>=2&&t.splits.length<=100&&t.splits.every(x=>isCategoryType(x.categoryId,'expense',catMap)&&Number.isSafeInteger(x.cents)&&x.cents>0&&typeof x.note==='string'&&x.note.length<=60);
+ return isCategoryType(t.categoryId,'expense',catMap)&&(!t.splits||Array.isArray(t.splits)&&!t.splits.length);
+}
+function validRule(r,catMap){return r&&typeof r.id==='string'&&r.id.length>0&&typeof r.name==='string'&&r.name.trim().length>0&&r.name.length<=32&&['monthly','yearly'].includes(r.frequency)&&Number.isInteger(r.day)&&r.day>=1&&r.day<=31&&Number.isInteger(r.month)&&r.month>=1&&r.month<=12&&isDate(r.startDate)&&Number.isSafeInteger(r.cents)&&r.cents>0&&r.cents<=9999999999&&isCategoryType(r.categoryId,'expense',catMap)&&typeof r.channel==='string'&&r.channel.trim().length>0&&r.channel.length<=30&&typeof r.note==='string'&&r.note.length<=120&&typeof r.enabled==='boolean'}
+function normalizeData(raw){
+ if(!raw||raw.schemaVersion!==5||raw.currency!=='CNY'||!Array.isArray(raw.records)||raw.records.length>200000)throw Error('仅支持简记 V1.0.6.1 格式（schemaVersion: 5）');
+ const custom=raw.customCategories||[],hidden=raw.hiddenCategoryIds||[],templates=raw.templates||[],rules=raw.recurringRules||[],budgets=raw.budgets||{};
+ if(!Array.isArray(custom)||custom.length>150||!custom.every(validCustom)||new Set(custom.map(c=>c.id)).size!==custom.length)throw Error('自定义分类数据无效');
+ const categories=new Map([...builtinExpenseCats,...builtinIncomeCats,...custom].map(c=>[c.id,c]));if(categories.size!==builtinExpenseCats.length+builtinIncomeCats.length+custom.length)throw Error('分类 ID 冲突');
+ if(!Array.isArray(hidden)||hidden.some(id=>typeof id!=='string'||!categories.has(id)))throw Error('隐藏分类无效');
+ const ids=new Set();for(const r of raw.records){if(!validRecord(r,categories))throw Error('备份中有无效账目或拆分/退款金额不一致');if(ids.has(r.id))throw Error('备份中有重复记录 ID');ids.add(r.id)}
+ if(!Array.isArray(templates)||templates.length>300||templates.some(x=>!validTemplate(x,categories))||new Set(templates.map(x=>x.id)).size!==templates.length)throw Error('快捷模板格式无效');
+ if(!Array.isArray(rules)||rules.length>300||rules.some(x=>!validRule(x,categories))||new Set(rules.map(x=>x.id)).size!==rules.length)throw Error('周期账单格式无效');
+ if(!budgets||typeof budgets!=='object'||Array.isArray(budgets))throw Error('预算格式无效');
+ for(const [k,b] of Object.entries(budgets)){if(!/^\d{4}-\d{2}$/.test(k)||!b||!Number.isSafeInteger(b.totalCents)||b.totalCents<0||b.totalCents>9999999999||!b.categories||typeof b.categories!=='object')throw Error('预算月份格式无效');for(const [id,cents] of Object.entries(b.categories))if(!isCategoryType(id,'expense',categories)||!Number.isSafeInteger(cents)||cents<=0||cents>9999999999)throw Error('分类预算金额无效')}
+ return {schemaVersion:5,currency:'CNY',records:raw.records.map(r=>({...r,...(r.type==='expense'?{refunds:r.refunds||[],splits:r.splits||[]}:{} )})),customCategories:custom,hiddenCategoryIds:[...new Set(hidden)],templates,recurringRules:rules,budgets};
+}
+let state={schemaVersion:5,currency:'CNY',records:[],customCategories:[],hiddenCategoryIds:[],templates:[],recurringRules:[],budgets:{}};
+let storageMode='loading'; // local | indexedDB | session | readOnly
+let storageError='';let ledgerDB=null;let saving=false;
+function notifyStorage(){
+ const el=$('storageBanner');el.classList.remove('danger');
+ if(storageMode==='session'){
+  el.innerHTML='<strong>当前是临时记账模式：</strong>浏览器限制了本地数据存储。现在可以添加和编辑记录；每次修改后会尝试自动下载最新 JSON 备份（请确认浏览器没有拦截下载）。关闭页面后须通过「备份与设置 → 覆盖恢复」导入备份，才能恢复记录。建议下载 HTML 后用 Edge/Chrome 正常窗口打开。';
+  el.classList.remove('hidden');
+ }else if(storageMode==='readOnly'){
+  el.textContent='检测到已有记账数据无法正确读取。为保护原记录，已暂停写入。请检查浏览器网站数据或使用本工具导出的 JSON 备份。'+(storageError?'（'+storageError+'）':'');
+  el.classList.add('danger');el.classList.remove('hidden');
+ }else{el.classList.add('hidden');el.textContent='';}
+}
+function openLedgerDB(){return new Promise((resolve,reject)=>{
+ if(!('indexedDB' in window))return reject(new Error('IndexedDB 不受支持'));
+ let request,settled=false;const done=(err,db)=>{if(settled){if(db)db.close();return}settled=true;clearTimeout(timeout);err?reject(err):resolve(db)};
+ const timeout=setTimeout(()=>done(new Error('IndexedDB 初始化超时')),2500);
+ try{request=indexedDB.open('jianji-ledger-offline',1)}catch(e){done(e);return}
+ request.onupgradeneeded=()=>{const db=request.result;if(!db.objectStoreNames.contains('data'))db.createObjectStore('data')};
+ request.onsuccess=()=>done(null,request.result);
+ request.onerror=()=>done(request.error||new Error('IndexedDB 无法打开'));
+ request.onblocked=()=>done(new Error('IndexedDB 被其他页面占用'));
+})}
+function idbRead(db){return new Promise((resolve,reject)=>{try{const r=db.transaction('data','readonly').objectStore('data').get(STORAGE_KEY);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error)}catch(e){reject(e)}})}
+function idbWrite(db,json){return new Promise((resolve,reject)=>{try{const tx=db.transaction('data','readwrite');tx.objectStore('data').put(json,STORAGE_KEY);tx.oncomplete=()=>resolve();tx.onerror=()=>reject(tx.error||new Error('IndexedDB 写入失败'));tx.onabort=()=>reject(tx.error||new Error('IndexedDB 写入中断'))}catch(e){reject(e)}})}
+async function initStorage(){
+ let localAvailable=false;
+ try{
+  const testKey=STORAGE_KEY+'.check';localStorage.setItem(testKey,'ok');localStorage.removeItem(testKey);
+  localAvailable=true;
+ }catch(e){console.warn('LocalStorage 不可用，尝试 IndexedDB：',e)}
+ if(localAvailable){
+  try{const raw=localStorage.getItem(STORAGE_KEY);if(raw)state=normalizeData(JSON.parse(raw));rebuildCategories();storageMode='local'}
+  catch(e){storageMode='readOnly';storageError=String(e.message||e);console.error('本地账本数据异常，停止写入以免覆盖',e)}
+ }else{
+  try{
+   ledgerDB=await openLedgerDB();const raw=await idbRead(ledgerDB);
+   if(raw)state=normalizeData(JSON.parse(raw));rebuildCategories();storageMode='indexedDB';
+  }catch(e){
+   console.warn('IndexedDB 不可用，切换到自动下载备份模式',e);
+   // 如果备份内容损坏，则禁止写入，避免覆盖可恢复的数据。
+   if(ledgerDB){storageMode='readOnly';storageError=String(e.message||e)}
+   else storageMode='session';
+  }
+ }
+ notifyStorage();render();
+}
+async function commit(next){
+ if(storageMode==='loading'){alert('正在初始化存储，请稍后重试。');return false}
+ if(storageMode==='readOnly'){alert('检测到已有数据读取异常，为保护原记录已暂停保存。请查看页面上方提示。');return false}
+ try{
+  const json=JSON.stringify(next);
+  if(storageMode==='local')localStorage.setItem(STORAGE_KEY,json);
+  else if(storageMode==='indexedDB')await idbWrite(ledgerDB,json);
+  state=next;rebuildCategories();render();
+  if(storageMode==='session'){
+   download(JSON.stringify({...state,exportedAt:new Date().toISOString()},null,2),`简记_临时模式自动备份_${today()}.json`,'application/json;charset=utf-8');
+  }
+  return true;
+ }catch(e){
+  console.error('记账保存失败',e);
+  const msg='保存失败：'+(e.name==='QuotaExceededError'?'浏览器空间不足，请先备份并清理空间。':'无法写入本地数据，请检查浏览器权限，或导出 JSON 备份。');
+  const errorEl=$('entryError');if(errorEl&&!$('entryOverlay').classList.contains('hidden'))errorEl.textContent=msg;
+  else alert(msg);
+  return false;
+ }
+}
+function toast(s){$('toast').textContent=s;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2800)}
+function idNew(){return (typeof crypto!=='undefined'&&crypto.randomUUID)?crypto.randomUUID():'r-'+Date.now()+'-'+Math.random().toString(36).slice(2,12)}
+function monthShift(delta){const [y,m]=viewMonth.split('-').map(Number);const d=new Date(y,m-1+delta,1);viewMonth=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;trendEndMonth=viewMonth;viewYear=Number(viewMonth.slice(0,4));render()}
+function shiftMonthKey(key,delta){const [y,m]=key.split('-').map(Number);const d=new Date(y,m-1+delta,1);const candidate=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;return candidate>='1900-01'&&candidate<='9999-12'?candidate:null}
+function trendShort(cents){const v=cents/100;if(!v)return '¥0';if(v>=10000)return '¥'+(v/10000).toFixed(v>=100000?0:1).replace(/\.0$/,'')+'万';if(v>=1000)return '¥'+(v/1000).toFixed(1).replace(/\.0$/,'')+'k';return '¥'+Number(v.toFixed(2)).toString()}
+let trendData=[];
+function describeTrend(month){const d=trendData.find(x=>x.key===month);if(!d)return; $('trendFooter').innerHTML=`<span class="trend-focus">${esc(d.key.replace('-','年'))}月：收入 ${esc(fmt(d.in))}，支出 ${esc(fmt(d.out))}，结余 ${esc(fmt(d.in-d.out))}</span><span>点击对应月份可以切换上方月度账本；图上显示简写金额，完整金额见此处。</span>`}
+function renderTrend(){
+ const [y,m]=trendEndMonth.split('-').map(Number);const months=[];for(let i=5;i>=0;i--){const d=new Date(y,m-1-i,1);const key=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');const items=state.records.filter(r=>r.date.slice(0,7)===key);months.push({key,in:items.filter(r=>r.type==='income').reduce((a,r)=>a+r.cents,0),out:sumNet(items.filter(r=>r.type==='expense'))})}
+ trendData=months;const max=Math.max(1,...months.flatMap(x=>[x.in,x.out]));const h=cents=>cents?Math.max(3,cents/max*100):0;
+ $('trendPeriod').textContent=months[0].key.replace('-','.')+' — '+months[5].key.replace('-','.');
+ $('trendChart').innerHTML=months.map(d=>`<button type="button" data-trend-month="${d.key}" class="trend-group ${d.key===viewMonth?'selected':''}" title="${esc(d.key)}：收入 ${fmt(d.in)}，支出 ${fmt(d.out)}，结余 ${fmt(d.in-d.out)}" aria-label="查看${esc(d.key)}月度账本：收入 ${fmt(d.in)}，支出 ${fmt(d.out)}"><span class="trend-values"><span class="trend-value income">${esc(trendShort(d.in))}</span><span class="trend-value expense">${esc(trendShort(d.out))}</span></span><span class="trend-bars"><span class="trend-bar income" style="height:${h(d.in).toFixed(2)}%"></span><span class="trend-bar expense" style="height:${h(d.out).toFixed(2)}%"></span></span><span class="trend-label">${Number(d.key.slice(5))}月</span></button>`).join('');
+ const selected=months.some(d=>d.key===viewMonth)?viewMonth:months[5].key;describeTrend(selected);
+ $('prevTrendBtn').disabled=!shiftMonthKey(trendEndMonth,-6);$('nextTrendBtn').disabled=!shiftMonthKey(trendEndMonth,6);
+}
+function distribution(items,total,listId,donutId,emptyText){
+ if(!items.length||!total){$(donutId).style.background='#e9efeb';$(listId).innerHTML=`<div class="category-empty">${esc(emptyText)}</div>`;return}
+ let acc=0;const chunks=items.map((c,i)=>{const start=acc;acc+=c.cents/total*100;return `${c.color||channelColors[i%channelColors.length]} ${start.toFixed(5)}% ${acc.toFixed(5)}%`});
+ $(donutId).style.background=`conic-gradient(${chunks.join(',')})`;
+ $(listId).innerHTML=items.map((c,i)=>{const col=c.color||channelColors[i%channelColors.length];const p=c.cents/total*100;return `<div class="category-row"><span class="dot" style="background:${col}"></span><span class="category-name">${esc(c.name)}</span><span class="category-value">${fmt(c.cents)}<span class="percent">${p.toFixed(1)}%</span></span><div class="meter"><span style="width:${p.toFixed(2)}%;background:${col}"></span></div></div>`}).join('');
+}
+function renderYear(){
+ const yearText=String(viewYear);const records=state.records.filter(r=>r.date.slice(0,4)===yearText);const income=records.filter(r=>r.type==='income'),expenses=records.filter(r=>r.type==='expense');
+ const sum=sumNet;const amountIn=sum(income),amountOut=sum(expenses),balance=amountIn-amountOut;
+ $('yearLabel').textContent=viewYear+' 年';$('yearIncome').textContent=fmt(amountIn);$('yearExpense').textContent=fmt(amountOut);$('yearBalance').textContent=fmt(balance);$('yearIncomeCount').textContent=income.length+' 笔收入';$('yearExpenseCount').textContent=expenses.length+' 笔支出';
+ document.querySelector('.annual-balance').classList.toggle('negative',balance<0);$('prevYearBtn').disabled=viewYear<=1900;$('nextYearBtn').disabled=viewYear>=9999;
+ const kinds=[{list:income,cats:incomeCategories,total:amountIn,prefix:'yearIncome',empty:'本年暂无收入'},{list:expenses,cats:expenseCategories,total:amountOut,prefix:'yearExpense',empty:'本年暂无支出'}];
+ for(const kind of kinds){const items=kind.cats.map(c=>({...c,cents:categorySum(kind.list,c.id)})).filter(c=>c.cents>0).sort((a,b)=>b.cents-a.cents);$(kind.prefix+'DonutTotal').textContent=fmtCompact(kind.total);$(kind.prefix+'Headline').textContent=items.length?'最高占比：'+items[0].name+' · '+(items[0].cents/kind.total*100).toFixed(1)+'%':kind.empty;distribution(items,kind.total,kind.prefix+'List',kind.prefix+'Donut',kind.empty)}
+ renderChannels(records,expenses);
+}
+function renderChannels(yearRecords,yearExpenses){
+ const expenses=channelScope==='year'?yearExpenses:state.records.filter(r=>r.date.slice(0,7)===viewMonth&&r.type==='expense');
+ const total=sumNet(expenses),byChannel=new Map();for(const r of expenses){const k=getChannel(r);byChannel.set(k,(byChannel.get(k)||0)+netCents(r))}
+ const items=[...byChannel].filter(([,cents])=>cents>0).map(([name,cents])=>({name,cents})).sort((a,b)=>b.cents-a.cents||a.name.localeCompare(b.name,'zh-CN'));
+ $('channelDonutTotal').textContent=fmtCompact(total);$('channelDominant').textContent=items.length?'最多：'+items[0].name:'暂无渠道记录';
+ $('channelStat').textContent=items.length?'占全部支出 '+(items[0].cents/total*100).toFixed(1)+'% · '+fmt(items[0].cents):'添加支出时可选择或自定义消费平台';
+ $('channelScopeDescription').textContent=channelScope==='year'?'统计 '+viewYear+' 年各平台与线下场所的消费占比':'统计 '+viewMonth+' 各平台与线下场所的消费占比';
+ $('channelFootnote').textContent='按'+(channelScope==='year'?'所选年份':'所选月份')+'净支出计算，退款冲减原消费所属月份；消费分类和渠道分别统计，不重复记账。';
+ document.querySelectorAll('[data-channel-scope]').forEach(b=>{const active=b.dataset.channelScope===channelScope;b.classList.toggle('active',active);b.setAttribute('aria-pressed',String(active))});
+ distribution(items,total,'channelList','channelDonut','这个时间段还没有支出记录');
+}
+function renderChannelOptions(selected=''){
+ const select=$('channelSelect');const extras=[...new Set(state.records.filter(r=>r.type==='expense'&&r.channel).map(r=>r.channel))].filter(v=>!commonChannels.includes(v)).sort((a,b)=>a.localeCompare(b,'zh-CN'));
+ const known=[...commonChannels,...extras];const chosen=selected||'其他日常消费';const isCustom=!known.includes(chosen);
+ select.innerHTML=known.map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join('')+'<option value="__custom__">＋ 自定义商家 / 平台…</option>';
+ select.value=isCustom?'__custom__':chosen;$('customChannelInput').value=isCustom?chosen:'';$('customChannelInput').classList.toggle('hidden',!isCustom);
+}
+function updateChannelVisibility(){const expense=entryType==='expense';$('channelField').classList.toggle('hidden',!expense);if(expense)$('customChannelInput').classList.toggle('hidden',$('channelSelect').value!=='__custom__')}
+function render(){const monthRec=state.records.filter(r=>r.date.slice(0,7)===viewMonth);const expenses=monthRec.filter(r=>r.type==='expense');const income=monthRec.filter(r=>r.type==='income');const sum=sumNet;const totalOut=sum(expenses),totalIn=sum(income),balance=totalIn-totalOut;
+ $('monthLabel').textContent=viewMonth.slice(0,4)+'年'+Number(viewMonth.slice(5))+'月';$('totalExpense').textContent=fmt(totalOut);$('totalIncome').textContent=fmt(totalIn);$('totalBalance').textContent=fmt(balance);$('recordCount').textContent=monthRec.length+' 笔记账';$('incomeCount').textContent=income.length+' 笔';$('expenseCount').textContent=expenses.length+' 笔';$('incomeSubtext').textContent=income.length+' 笔收入记录';$('expenseSubtext').textContent=expenses.length+' 笔支出记录';
+ const monthWord=viewMonth===monthToday()?'本月':'当月';document.querySelectorAll('[data-monthword]').forEach(el=>el.textContent=monthWord);
+ $('balanceStatus').textContent=monthRec.length===0?'记下第一笔，开始了解收支情况':balance>0?'收入高于支出，当前有结余':balance<0?'支出高于收入，本月收支为负':'本月收入和支出相抵';document.querySelector('.net-card').classList.toggle('negative',balance<0);
+ const currentDay=today();const isCurrent=viewMonth===currentDay.slice(0,7);const isFuture=viewMonth>currentDay.slice(0,7);const [year,month]=viewMonth.split('-').map(Number);const daysInMonth=new Date(year,month,0).getDate();const avgDenom=isFuture?0:(isCurrent?Number(currentDay.slice(8)):daysInMonth);
+ const avgEntries=isCurrent?expenses.filter(r=>r.date<=currentDay):expenses;
+ $('expenseAvg').textContent=avgDenom?fmt(Math.round(sum(avgEntries)/avgDenom)):'—';$('avgHint').textContent=isFuture?'未来月份不计算日均':isCurrent?'按本月至今已过自然日':'按所选月份自然日';
+ $('savingsRate').textContent=totalIn>0?(balance/totalIn*100).toFixed(1)+'%':'—';
+ const topExpense=expenseCategories.map(c=>({...c,cents:categorySum(expenses,c.id)})).sort((a,b)=>b.cents-a.cents)[0];const topIncome=incomeCategories.map(c=>({...c,cents:categorySum(income,c.id)})).sort((a,b)=>b.cents-a.cents)[0];
+ const insights=[];if(topExpense?.cents)insights.push('支出最多的是「'+topExpense.name+'」'+fmt(topExpense.cents));if(topIncome?.cents)insights.push('收入主要来自「'+topIncome.name+'」'+fmt(topIncome.cents));$('overviewInsight').textContent=insights.length?insights.join(' · '):'这个月还没有收支记录。点击“记收入”或“记支出”开始记录。';
+ renderTrend();renderYear();renderExtras(expenses);$('nextMonthBtn').disabled=viewMonth>='9999-12';$('prevMonthBtn').disabled=viewMonth<='1900-01';
+ document.querySelectorAll('[data-filter]').forEach(btn=>btn.classList.toggle('active',btn.dataset.filter===filter));
+ renderFilterOptions();
+ const recordPool=filterScope==='all'?state.records:filterScope==='range'?state.records.filter(r=>(!filterFrom||r.date>=filterFrom)&&(!filterTo||r.date<=filterTo)):monthRec;
+ const minC=filterMin===''?null:Math.round(Number(filterMin)*100),maxC=filterMax===''?null:Math.round(Number(filterMax)*100);
+ let shown=recordPool.filter(r=>{
+  if(filter!=='all'&&r.type!==filter)return false;
+  if(filterCategory&&r.categoryId!==filterCategory&&!r.splits?.some(sp=>sp.categoryId===filterCategory))return false;
+  if(filterChannel&&r.channel!==filterChannel)return false;
+  if(minC!==null&&(filterCategory?categorySpend(r,filterCategory):netCents(r))<minC)return false;
+  if(maxC!==null&&(filterCategory?categorySpend(r,filterCategory):netCents(r))>maxC)return false;
+  const searchText=[r.note,r.channel,allCat.get(r.categoryId)?.name,...(r.splits||[]).flatMap(sp=>[allCat.get(sp.categoryId)?.name,sp.note||'']),...(r.refunds||[]).map(x=>x.note)].join(' ').toLowerCase();
+  return searchText.includes(query);
+ }).sort((a,b)=>b.date.localeCompare(a.date)||(b.createdAt||'').localeCompare(a.createdAt||'')||b.id.localeCompare(a.id));
+ $('filterResult').textContent=`显示 ${shown.length} / ${recordPool.length} 笔记录 · 当前流水合计：收入 ${fmt(shown.filter(r=>r.type==='income').reduce((a,r)=>a+(filterCategory?categorySpend(r,filterCategory):r.cents),0))}，净支出 ${fmt(shown.filter(r=>r.type==='expense').reduce((a,r)=>a+(filterCategory?categorySpend(r,filterCategory):netCents(r)),0))}${filterCategory?'（当前分类的净金额）':''}`;
+ if(!shown.length){$('entryList').innerHTML=`<div class="empty-state"><div class="empty-illustration">${recordPool.length?'⌕':'✎'}</div><strong>${recordPool.length?'没有匹配的记录':'当前时间段还没有记录'}</strong><p>${recordPool.length?'试试修改搜索词或筛选条件':'从一笔日常消费开始，慢慢养成好习惯'}</p>${recordPool.length?'':'<button type="button" class="mini-btn" id="emptyAddBtn">＋ 记第一笔</button>'}</div>`;}else{let last='';$('entryList').innerHTML=shown.map(r=>{
+ const cat=r.splits?.length?{name:'拆分订单',tone:'#edf7f1',emoji:'🧾'}:(allCat.get(r.categoryId)||{name:'已删除分类',tone:'#f2f5f2',emoji:'📌'}),refunds=r.type==='expense'?(r.refunds||[]):[],returned=refundedCents(r),net=netCents(r);
+ const shownNet=filterCategory?categorySpend(r,filterCategory):net;
+ const dateHeading=r.date===last?'':`<div class="day-heading"><span>${esc(r.date.slice(5).replace('-','月'))}日 · ${['周日','周一','周二','周三','周四','周五','周六'][new Date(Number(r.date.slice(0,4)),Number(r.date.slice(5,7))-1,Number(r.date.slice(8,10))).getDay()]}</span><span>${r.date}</span></div>`;last=r.date;
+ const detail=refunds.length?`<details class="refund-details"><summary>↩ 已退款 ${fmt(returned)}（${refunds.length} 笔） · 查看/管理退款明细</summary>${refunds.slice().sort((a,b)=>b.date.localeCompare(a.date)).map(ref=>`<div class="refund-detail-line"><span class="refund-detail-copy">${esc(ref.date)} · 退款 ${fmt(ref.cents)}${r.splits?.length?' · '+esc(splitDisplayName(r,ref.splitId)):''}${ref.note?' · '+esc(ref.note):''}</span><span class="refund-detail-controls"><button type="button" class="entry-action" data-action="edit-refund" data-id="${esc(r.id)}" data-refund-id="${esc(ref.id)}">编辑退款</button><button type="button" class="entry-action" data-action="delete-refund" data-id="${esc(r.id)}" data-refund-id="${esc(ref.id)}">删除退款</button></span></div>`).join('')}</details>`:'';
+ const splitInfo=r.splits?.length?`<div class="entry-breakdown">拆分明细：${r.splits.map((sp,i)=>esc('#'+(i+1)+' '+(allCat.get(sp.categoryId)?.name||'分类')+(sp.note?' · '+sp.note:''))+' '+fmt(sp.cents-(refunds.filter(ref=>ref.splitId===sp.id).reduce((a,ref)=>a+ref.cents,0)))).join(' · ')}${filterCategory?' · 本类净额 '+fmt(categorySpend(r,filterCategory)):''}</div>`:'';
+ return dateHeading+`<div class="entry"><div class="entry-icon" style="--tone:${cat.tone}">${cat.emoji}</div><div class="entry-info"><div class="entry-category">${r.splits?.length?'🧾 拆分 '+r.splits.length+' 项':esc(cat.name)}${r.type==='expense'&&net===0?' · 已全退':''}</div><div class="entry-note ${r.note?'':'empty'}">${r.note?esc(r.note):'无备注'}${r.type==='expense'?`<span class="channel-tag"> · ${esc(r.channel)}</span>`:''}</div></div><div class="entry-amount-wrap"><div class="entry-amount ${r.type==='income'?'income':''}">${r.type==='income'?'+':'−'}${esc(fmt(shownNet))}</div>${returned?`<div class="entry-paid">原价 ${fmt(r.cents)} · 已退 ${fmt(returned)}</div>`:''}${filterCategory&&r.splits?.length?`<div class="entry-paid">整单净额 ${fmt(net)}</div>`:''}</div><div class="entry-actions">${r.type==='expense'&&net>0?`<button type="button" class="entry-action refund-trigger" data-action="refund" data-id="${esc(r.id)}">↩ 退款</button>`:''}<button type="button" class="entry-action" data-action="edit" data-id="${esc(r.id)}" aria-label="编辑 ${esc(cat.name)} 记录">编辑</button><button type="button" class="entry-action" data-action="delete" data-id="${esc(r.id)}" aria-label="删除 ${esc(cat.name)} 记录">删除</button></div></div>${splitInfo}${detail}`;
+ }).join('')}
+ const isExpense=chartMode==='expense';const categorySet=isExpense?expenseCategories:incomeCategories;const dataSet=isExpense?expenses:income;const chartTotal=isExpense?totalOut:totalIn;const items=categorySet.map(c=>({...c,cents:categorySum(dataSet,c.id)})).filter(x=>x.cents>0).sort((a,b)=>b.cents-a.cents);
+ $('categoryTitle').textContent=isExpense?'支出分析':'收入分析';$('categorySubtitle').textContent=isExpense?'所选月份各类支出的金额与占比':'所选月份各类收入来源与占比';$('donutCaption').textContent=isExpense?'支出合计':'收入合计';$('donutTotal').textContent=fmtCompact(chartTotal);$('dominantCategory').textContent=items[0]?.name||(isExpense?'暂无支出':'暂无收入');
+ $('categoryInfo').firstChild.textContent=isExpense?'主要支出类别':'主要收入来源';$('categoryInfoFoot').textContent=items.length?'查看各类金额及占比':'等待第一笔记录';
+ $('categoryFootnote').textContent=isExpense?'按净支出统计原消费所属月份，已扣除关联退款；不受流水筛选影响。':'统计所选月份全部收入；消费退款不算收入。';
+ document.querySelectorAll('[data-chart-mode]').forEach(btn=>{const active=btn.dataset.chartMode===chartMode;btn.classList.toggle('active',active);btn.setAttribute('aria-pressed',String(active))});
+ if(!items.length){$('donut').style.background='#e9efeb';$('categoryList').innerHTML='<div class="category-empty">'+(isExpense?'添加一笔支出后，会在这里看到分类统计':'添加一笔收入后，会在这里看到收入来源统计')+'</div>'}else{let acc=0;const chunks=items.map(i=>{const start=acc;acc+=i.cents/chartTotal*100;return `${i.color} ${start.toFixed(5)}% ${acc.toFixed(5)}%`});$('donut').style.background=`conic-gradient(${chunks.join(',')})`;$('categoryList').innerHTML=items.map(i=>`<div class="category-row"><span class="dot" style="background:${i.color}"></span><span class="category-name">${esc(i.name)}</span><span class="category-value">${fmt(i.cents)}<span class="percent">${(i.cents/chartTotal*100).toFixed(1)}%</span></span><div class="meter"><span style="width:${(i.cents/chartTotal*100).toFixed(2)}%;background:${i.color}"></span></div></div>`).join('')}
+ $('storageInfo').textContent=({local:'已启用浏览器本地存储（localStorage）。',indexedDB:'已启用浏览器数据库（IndexedDB）。',session:'仅临时存于此页面；每次保存都会自动下载备份，重新打开页面必须导入 JSON。',readOnly:'账本数据读取异常，已暂停写入以保护数据。',loading:'正在初始化存储……'}[storageMode]||'')+` 当前页面显示 ${state.records.length} 笔记录。数据不会上传服务器；不同浏览器、不同设备之间不共享。请定期导出 JSON 备份。`;}
+function renderCats(){
+ const existing=(editingId||pendingRuleId)?entryCategory:'';
+ const cats=catsFor(entryType,false,existing);
+ if(!cats.some(x=>x.id===entryCategory))entryCategory=cats[0]?.id||'';
+ $('categoryPicks').innerHTML=cats.map(cat=>`<button type="button" class="category-pick ${cat.id===entryCategory?'active':''}" data-category="${cat.id}" aria-pressed="${cat.id===entryCategory}"><span class="cat-symbol">${cat.emoji}</span>${esc(cat.name)}</button>`).join('')||'<p class="field-hint">请先到分类管理中恢复至少一种分类。</p>';
+ document.querySelectorAll('[data-entry-type]').forEach(b=>b.classList.toggle('active',b.dataset.entryType===entryType));
+}
+function openEntry(id,forcedType,template=null){
+ editingId=id||null;const r=id?state.records.find(x=>x.id===id):null;if(id&&!r)return;
+ pendingRuleId=template?.ruleId||null;pendingRulePeriod=template?.rulePeriod||null;
+ entryType=r?r.type:template?.type||(forcedType==='income'?'income':'expense');
+ entryCategory=(r?.categoryId||template?.categoryId||(entryType==='income'?'salary':'food'));
+ $('entryModalTitle').textContent=r?'编辑记录':pendingRuleId?'确认周期账单':'记一笔';$('saveEntryBtn').textContent=r?'保存修改':'保存记录';
+ $('amountInput').value=r?(r.cents/100).toFixed(2):template?.cents?(template.cents/100).toFixed(2):'';
+ $('dateInput').value=r?r.date:template?.date||dateForViewedMonth();$('noteInput').value=r?r.note:template?.note||'';
+ $('entryError').textContent='';$('entryRefundHint').textContent=r&&refundedCents(r)?`这笔支出已有 ${fmt(refundedCents(r))} 的退款。修改金额或拆分项时，不能使对应退款超过原金额。`:'';
+ splitEnabled=Boolean(r?.splits?.length||template?.splits?.length);
+ splitRows=(r?.splits?.length?r.splits:template?.splits||[]).map(x=>({...x,id:r?x.id:idNew(),amount:(x.cents/100).toFixed(2),note:x.note||''}));
+ $('saveTemplateCheck').checked=false;$('templateNameInput').value='';$('templateNameInput').classList.add('hidden');
+ renderCats();renderChannelOptions(r?.channel||template?.channel||'');updateChannelVisibility();renderSplit();
+ document.querySelectorAll('[data-entry-type]').forEach(b=>b.disabled=Boolean(r&&refundedCents(r))||Boolean(pendingRuleId));
+ $('entryOverlay').classList.remove('hidden');document.body.style.overflow='hidden';setTimeout(()=>$('amountInput').focus(),40);
+}
+function closeModal(name){$(name+'Overlay').classList.add('hidden');if(['entry','refund','settings','templates','categories','budget','recurring'].every(n=>$(n+'Overlay').classList.contains('hidden')))document.body.style.overflow='';}
+function openSettings(){render();$('settingsOverlay').classList.remove('hidden');document.body.style.overflow='hidden'}
+function parseAmount(v){let s=String(v).trim().replace(/[０-９]/g,ch=>String(ch.charCodeAt(0)-65296)).replace(/，/g,',').replace(/．/g,'.');if(s.includes(',')){if(!/^\d{1,3}(,\d{3})+(\.\d{0,2})?$/.test(s))return null;s=s.replace(/,/g,'')}if(!/^\d{1,10}(\.\d{0,2})?$/.test(s))return null;const [a,b='']=s.split('.');const cents=Number(a)*100+Number(b.padEnd(2,'0'));return Number.isSafeInteger(cents)&&cents>0&&cents<=9999999999?cents:null;}
+async function saveEntry(e){
+ e.preventDefault();if(saving)return;
+ const date=$('dateInput').value,note=$('noteInput').value.trim();
+ if(entryType==='expense'&&splitEnabled)updateSplitSum();
+ const cents=parseAmount($('amountInput').value);
+ const channel=entryType==='expense'?($('channelSelect').value==='__custom__'?$('customChannelInput').value.trim():$('channelSelect').value):'';
+ if(entryType==='expense'&&!channel){$('entryError').textContent='请填写消费渠道。';return}
+ if(channel.length>30||note.length>120||!isDate(date)||cents===null){$('entryError').textContent='请核对金额（大于0，最多两位小数）、日期、渠道和备注。';return}
+ const at=new Date().toISOString(),old=editingId?state.records.find(r=>r.id===editingId):null;
+ if(old&&refundedCents(old)){if(entryType!=='expense'||cents<refundedCents(old)||old.refunds.some(x=>x.date<date)){$('entryError').textContent='已退款记录不能改为收入；原金额不能少于已退款，日期不能晚于退款日。';return}}
+ let splits=[];
+ if(entryType==='expense'&&splitEnabled){
+  syncSplitRows();if(splitRows.length<2){$('entryError').textContent='拆分记账至少需要两条分类明细。';return}
+  let total=0;for(const row of splitRows){const amt=parseAmount(row.amount||'');if(amt===null||!isCategoryType(row.categoryId,'expense')||row.note.length>60){$('entryError').textContent='拆分明细的金额或分类无效。';return}splits.push({id:row.id||idNew(),categoryId:row.categoryId,cents:amt,note:row.note});total+=amt}
+  if(total!==cents){$('entryError').textContent='拆分明细合计与订单总额不一致，请检查金额。';return}
+ }
+ if(entryType==='expense'&&old?.refunds?.length&&Boolean(old.splits?.length)!==Boolean(splits.length)){$('entryError').textContent='已有退款的账目不能在普通与拆分模式之间切换，请先删除关联退款。';return}
+ const rec={id:old?.id||idNew(),type:entryType,cents,date,categoryId:splits.length?null:entryCategory,note,channel,...(entryType==='expense'?{refunds:old?.refunds||[],splits}:{}),...(old?.recurringId?{recurringId:old.recurringId,recurringPeriod:old.recurringPeriod}:pendingRuleId?{recurringId:pendingRuleId,recurringPeriod:pendingRulePeriod}:{}),createdAt:old?.createdAt||at,updatedAt:at};
+ if(!validRecord(rec)){$('entryError').textContent='这笔记录或退款明细不符合约束，请核对分类、退款和各拆分金额。';return}
+ let newTemplates=state.templates;
+ if($('saveTemplateCheck').checked){const name=$('templateNameInput').value.trim();if(!name||name.length>24){$('entryError').textContent='请为快捷记账模板填写 1—24 字的名称。';return}
+  const tmpl={id:idNew(),name,type:rec.type,categoryId:rec.categoryId,channel:rec.channel,note:rec.note,...(splits.length?{splits:splits.map(x=>({categoryId:x.categoryId,cents:x.cents,note:x.note}))}:{})};newTemplates=[...state.templates,tmpl];}
+ if(pendingRuleId&&!old&&state.records.some(x=>x.recurringId===pendingRuleId&&x.recurringPeriod===pendingRulePeriod)){$('entryError').textContent='本期账单已记录，不能重复确认。';return}
+ const next={...state,templates:newTemplates,records:old?state.records.map(r=>r.id===old.id?rec:r):[...state.records,rec]};
+ saving=true;$('saveEntryBtn').disabled=true;try{if(await commit(next)){viewMonth=date.slice(0,7);trendEndMonth=viewMonth;viewYear=Number(date.slice(0,4));closeModal('entry');render();toast(storageMode==='session'?'已记账并生成备份':old?'修改已保存':'已保存这一笔记录')}}finally{saving=false;$('saveEntryBtn').disabled=false}
+}
+function openRefund(expenseId,refId=null){
+ const expense=state.records.find(r=>r.id===expenseId&&r.type==='expense');if(!expense)return;
+ const previous=refId?(expense.refunds||[]).find(r=>r.id===refId):null;if(refId&&!previous)return;
+ refundExpenseId=expenseId;refundEditingId=refId;
+ const left=netCents(expense)+(previous?.cents||0);if(left<=0)return;
+ $('refundModalTitle').textContent=previous?'修改退款记录':'记录退款';$('saveRefundBtn').textContent=previous?'保存修改':'保存退款';
+ $('refundSource').textContent=`原消费 ${expense.date} · ${expense.splits?.length?'拆分订单':allCat.get(expense.categoryId)?.name} · ${expense.channel}｜原价 ${fmt(expense.cents)}｜剩余 ${fmt(netCents(expense))}`;
+ const withSplit=Boolean(expense.splits?.length);$('refundSplitField').classList.toggle('hidden',!withSplit);
+ if(withSplit){$('refundSplitSelect').innerHTML=expense.splits.map(x=>`<option value="${esc(x.id)}">${esc(splitDisplayName(expense,x.id))}</option>`).join('');$('refundSplitSelect').value=previous?.splitId||expense.splits.find(sp=>sp.cents>(expense.refunds||[]).filter(x=>x.splitId===sp.id).reduce((a,x)=>a+x.cents,0))?.id||expense.splits[0].id}
+ $('refundAmountInput').value=previous?(previous.cents/100).toFixed(2):'';$('refundDateInput').value=previous?.date||(today()<expense.date?expense.date:today());$('refundDateInput').min=expense.date;$('refundNoteInput').value=previous?.note||'';$('refundError').textContent='';updateRefundSplitHint();$('refundOverlay').classList.remove('hidden');document.body.style.overflow='hidden';setTimeout(()=>$('refundAmountInput').focus(),40);
+}
+function updateRefundSplitHint(){const expense=state.records.find(x=>x.id===refundExpenseId);if(!expense?.splits?.length)return;const id=$('refundSplitSelect').value,sp=expense.splits.find(x=>x.id===id);if(!sp)return;const refunded=(expense.refunds||[]).filter(x=>x.splitId===id&&x.id!==refundEditingId).reduce((a,x)=>a+x.cents,0);$('refundSplitHint').textContent=`${splitDisplayName(expense,id)}，本次最多可退 ${fmt(sp.cents-refunded)}`}
+async function saveRefund(e){e.preventDefault();if(refundSaving)return;
+ const expense=state.records.find(r=>r.id===refundExpenseId&&r.type==='expense');if(!expense){$('refundError').textContent='原消费已不存在。';return}
+ const previous=refundEditingId?(expense.refunds||[]).find(x=>x.id===refundEditingId):null;
+ const cents=parseAmount($('refundAmountInput').value),date=$('refundDateInput').value,note=$('refundNoteInput').value.trim(),splitId=expense.splits?.length?$('refundSplitSelect').value:undefined;
+ const remaining=splitId?(expense.splits.find(x=>x.id===splitId)?.cents||0)-(expense.refunds||[]).filter(x=>x.splitId===splitId&&x.id!==refundEditingId).reduce((a,x)=>a+x.cents,0):netCents(expense)+(previous?.cents||0);
+ if(cents===null||cents>remaining||!isDate(date)||date<expense.date||note.length>120){$('refundError').textContent='请核对退款金额、明细和日期；退款不能超过对应商品剩余金额。';return}
+ const at=new Date().toISOString(),item={id:previous?.id||idNew(),cents,date,note,...(splitId?{splitId}:{}),createdAt:previous?.createdAt||at,updatedAt:at};
+ const refunds=previous?expense.refunds.map(x=>x.id===previous.id?item:x):[...(expense.refunds||[]),item];const updated={...expense,refunds,updatedAt:at};
+ if(!validRecord(updated)){$('refundError').textContent='退款超出对应拆分商品金额。';return}
+ refundSaving=true;$('saveRefundBtn').disabled=true;try{if(await commit({...state,records:state.records.map(r=>r.id===expense.id?updated:r)})){viewMonth=expense.date.slice(0,7);trendEndMonth=viewMonth;viewYear=Number(viewMonth.slice(0,4));closeModal('refund');render();toast(previous?'退款已修改':'已冲减原消费支出')}}finally{refundSaving=false;$('saveRefundBtn').disabled=false}
+}
+function download(content,name,mime){const blob=new Blob([content],{type:mime});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000)}
+function exportJson(){const name=`简记_完整备份_${today()}.json`;download(JSON.stringify({...state,exportedAt:new Date().toISOString()},null,2),name,'application/json;charset=utf-8');toast('JSON 备份已生成，请妥善保存')}
+function exportCsv(){
+ const header=['实际日期','统计归属日期','类型','分类','金额（元）','备注','记录ID','消费平台/场所','关联原支出ID','拆分明细ID','拆分项备注'];const rows=[];
+ for(const r of state.records){
+  const parts=r.type==='expense'&&r.splits?.length?r.splits:[{id:'',categoryId:r.categoryId,cents:r.cents}];
+  for(const sp of parts)rows.push([r.date,r.date,r.type==='income'?'收入':r.splits?.length?'拆分支出':'支出',allCat.get(sp.categoryId)?.name||'分类',(sp.cents/100).toFixed(2),r.note,r.id,r.channel,'',sp.id,sp.note||'']);
+  if(r.type==='expense')for(const refund of (r.refunds||[])){
+   const catId=refund.splitId?r.splits.find(x=>x.id===refund.splitId)?.categoryId:r.categoryId;
+   rows.push([refund.date,r.date,'退款冲减',allCat.get(catId)?.name||'分类',(-refund.cents/100).toFixed(2),refund.note,refund.id,r.channel,r.id,refund.splitId||'',r.splits?.find(x=>x.id===refund.splitId)?.note||'']);
+  }
+ }
+ rows.sort((a,b)=>b[0].localeCompare(a[0]));const safeCsv=v=>{let t=String(v);if(/^[\s]*[=+@\-\t\r]/.test(t))t="'"+t;return '"'+t.replace(/"/g,'""')+'"'};
+ const csv='\ufeff'+[header,...rows].map((r,index)=>r.map((v,i)=>index>0&&i===4?'"'+v+'"':safeCsv(v)).join(',')).join('\r\n');download(csv,`简记_收支与退款明细_${today()}.csv`,'text/csv;charset=utf-8');toast('已导出 CSV（拆分明细逐行列出）');
+}
+async function importData(file){if(!file)return;if(file.size>14*1024*1024){alert('备份超过14MB，已拒绝导入。');return}if(storageMode==='loading'||storageMode==='readOnly'){alert('目前无法安全导入，请检查存储环境。');return}
+ let incoming;try{incoming=normalizeData(JSON.parse(await file.text()))}catch(err){alert('导入失败：'+err.message);return}
+ if(importMode==='replace'){
+  if(!confirm(`确定覆盖当前 ${state.records.length} 笔账目、分类、预算、模板和周期账单吗？建议先导出当前备份。`))return;
+  if(await commit(incoming)){viewMonth=monthToday();viewYear=Number(viewMonth.slice(0,4));trendEndMonth=viewMonth;closeModal('settings');toast('完整账本已恢复')}return;
+ }
+ const custom=[...state.customCategories],customSet=new Set(custom.map(x=>x.id));for(const c of incoming.customCategories)if(!customSet.has(c.id)){custom.push(c);customSet.add(c.id)}
+ const cats=new Map([...builtinExpenseCats,...builtinIncomeCats,...custom].map(c=>[c.id,c]));
+ const mergeById=(existing,newItems)=>{const seen=new Set(existing.map(x=>x.id));return [...existing,...newItems.filter(x=>!seen.has(x.id))]};
+ const next={...state,customCategories:custom,hiddenCategoryIds:[...new Set([...state.hiddenCategoryIds,...incoming.hiddenCategoryIds])],records:mergeById(state.records,incoming.records),templates:mergeById(state.templates,incoming.templates),recurringRules:mergeById(state.recurringRules,incoming.recurringRules),budgets:{...incoming.budgets,...state.budgets}};
+ try{normalizeData(next)}catch(err){alert('合并校验未通过：'+err.message);return}
+ if(!confirm(`将增加 ${next.records.length-state.records.length} 笔账目，并合并分类、快捷模板、周期账单（同ID保留当前项），确认吗？`))return;
+ if(await commit(next)){closeModal('settings');toast('数据合并完成')}
+}
+// ---------- V1.0.6 interface: templates, recurring items, categories, filters, budgets, splitting ----------
+function openOverlay(name){$(name+'Overlay').classList.remove('hidden');document.body.style.overflow='hidden'}
+function optionCats(type,selected=''){return catsFor(type,false,selected).map(c=>`<option value="${esc(c.id)}" ${c.id===selected?'selected':''}>${esc(c.emoji)} ${esc(c.name)}</option>`).join('')}
+function renderExtras(expenses){
+ renderTemplates();renderBudgetOverview(expenses);renderRecurringDue();
+}
+function renderTemplates(){
+ const templates=state.templates.slice(-10).reverse();
+ $('templatesList').innerHTML=templates.length?`<div class="quick-list">${templates.map(t=>`<button type="button" class="quick-pill" data-template="${esc(t.id)}"><strong>${esc(t.name)}</strong><small>${t.type==='income'?'收入':'支出'} · ${esc(t.splits?.length?'拆分 '+t.splits.length+' 项':allCat.get(t.categoryId)?.name||'分类')}</small></button>`).join('')}</div>`:'<div class="feature-empty">还没有模板。先「记一笔」，勾选“保存为快捷记账模板”就能添加。</div>';
+ if(!$('templatesOverlay').classList.contains('hidden'))renderTemplateManager();
+}
+function renderTemplateManager(){
+ $('templatesManageList').innerHTML=state.templates.length?state.templates.map(t=>`<div class="manage-row"><div><strong>${esc(t.name)}</strong><span>${t.type==='income'?'收入':'支出'} · ${esc(t.splits?.length?'拆分记账':allCat.get(t.categoryId)?.name||'分类')}${t.channel?' · '+esc(t.channel):''}</span></div><div class="manage-actions"><button type="button" data-template-use="${esc(t.id)}">使用</button><button type="button" data-template-delete="${esc(t.id)}" class="danger-text">删除</button></div></div>`).join(''):'<div class="feature-empty">暂无模板。在新增记账时可保存常用组合。</div>';
+}
+function renderBudgetOverview(expenses){
+ const b=getBudget(viewMonth),companySpent=categorySum(expenses,'company'),sideSpent=categorySum(expenses,'side-expense'),actual=Math.max(0,sumNet(expenses)-companySpent-sideSpent),limit=b.totalCents;
+ if(!limit&&!Object.keys(b.categories).length){$('budgetSummary').innerHTML=`<div class="feature-empty">还没有设置家庭总预算。点击「设置预算」开始。</div><div class="budget-sub business-budget-note">本月家庭净支出 ${fmt(actual)} · 公司支出 ${fmt(companySpent)} · 副业支出 ${fmt(sideSpent)}（后两项不占家庭预算）</div>`;return}
+ let html=limit?`<div class="budget-top"><span>家庭净支出 <strong>${fmt(actual)}</strong></span><span class="${actual>limit?'budget-over':''}">${actual>limit?'超出 '+fmt(actual-limit):'剩余 '+fmt(limit-actual)}</span></div><div class="budget-bar"><span class="${actual>limit?'over':''}" style="width:${Math.min(100,actual/limit*100).toFixed(2)}%"></span></div><div class="budget-sub">家庭总预算 ${fmt(limit)} · 已使用 ${(actual/limit*100).toFixed(1)}%</div>`:'<div class="budget-sub">未设置总预算，已设置下方分类预算。</div>';
+ html+=`<div class="budget-sub business-budget-note">公司支出 ${fmt(companySpent)} · 副业支出 ${fmt(sideSpent)}（不占用家庭总预算，可单独设置分类预算）</div>`;
+ const cats=Object.entries(b.categories).map(([id,val])=>({cat:allCat.get(id),id,limit:val,spent:categorySum(expenses,id)})).filter(x=>x.cat).sort((a,b)=>b.spent-a.spent);
+ if(cats.length)html+=`<div class="budget-mini">${cats.map(x=>`<div><strong>${esc(x.cat.name)}</strong> · ${fmt(x.spent)} / ${fmt(x.limit)}<div class="budget-bar" style="height:5px;margin:6px 0 2px"><span class="${x.spent>x.limit?'over':''}" style="width:${Math.min(100,x.spent/x.limit*100).toFixed(2)}%"></span></div><span class="${x.spent>x.limit?'budget-over':'budget-sub'}">${x.spent>x.limit?'超出 '+fmt(x.spent-x.limit):'剩余 '+fmt(x.limit-x.spent)}</span></div>`).join('')}</div>`;
+ $('budgetSummary').innerHTML=html;
+}
+function recurringCandidates(rule,date){
+ const t=Date.parse(date+'T00:00:00Z');
+ return state.records.filter(r=>r.type==='expense'&&!r.recurringId&&!r.splits?.length&&r.categoryId===rule.categoryId&&r.cents===rule.cents&&Math.abs(Date.parse(r.date+'T00:00:00Z')-t)<=5*86400000).sort((a,b)=>Math.abs(Date.parse(a.date+'T00:00:00Z')-t)-Math.abs(Date.parse(b.date+'T00:00:00Z')-t));
+}
+function renderRecurringDue(){
+ const list=[];
+ for(const rule of state.recurringRules){const date=recurringDue(rule,viewMonth);if(!date)continue;const done=state.records.find(r=>r.recurringId===rule.id&&r.recurringPeriod===viewMonth),similar=done?[]:recurringCandidates(rule,date);list.push({rule,date,done,similar})}
+ $('recurringDueList').innerHTML=list.length?list.map(x=>`<div class="due-card ${x.done?'done':''}"><div><strong>${esc(x.rule.name)} · 计划 ${fmt(x.rule.cents)}</strong><small>${x.date} · ${esc(allCat.get(x.rule.categoryId)?.name||'分类')} · ${x.done?'✓ 已入账 '+fmt(netCents(x.done))+'（实际支付 '+fmt(x.done.cents)+'）':x.similar.length?'发现 '+x.similar.length+' 笔相似账目，请先核对':'待确认 · 不计入支出'}</small></div><div class="due-actions">${x.done?`<button type="button" class="outline-btn" data-due-edit="${esc(x.done.id)}">查看记录</button>`:x.similar.length?`<button type="button" class="outline-btn" data-due-link="${esc(x.rule.id)}">关联已有</button><button type="button" class="outline-btn" data-due-new="${esc(x.rule.id)}">另记一笔</button>`:`<button type="button" class="outline-btn" data-due="${esc(x.rule.id)}">确认支付</button>`}</div></div>`).join(''):'<div class="feature-empty" style="flex:1">该月份暂无到期的周期账单，可点击「管理周期账单」新增房租、社保等周期支出。</div>';
+}
+function renderFilterOptions(){
+ const oldCat=$('filterCategory').value,oldChannel=$('filterChannel').value;
+ const catOptions=[...expenseCategories,...incomeCategories].map(c=>`<option value="${esc(c.id)}">${esc(c.name)}${incomeCategories.some(i=>i.id===c.id)?'（收入）':''}</option>`).join('');
+ if($('filterCategory').dataset.catalog!==catOptions){$('filterCategory').innerHTML='<option value="">全部分类</option>'+catOptions;$('filterCategory').dataset.catalog=catOptions}
+ const channelOptions=[...new Set([...commonChannels,...state.records.filter(r=>r.type==='expense').map(r=>r.channel)])].filter(Boolean).sort((a,b)=>a.localeCompare(b,'zh-CN'));
+ const channelMarkup=channelOptions.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');
+ if($('filterChannel').dataset.catalog!==channelMarkup){$('filterChannel').innerHTML='<option value="">全部渠道</option>'+channelMarkup;$('filterChannel').dataset.catalog=channelMarkup}
+ $('filterCategory').value=filterCategory;$('filterChannel').value=filterChannel;$('filterScope').value=filterScope;$('filterRange').classList.toggle('hidden',filterScope!=='range');
+}
+function renderSplit(){
+ const allow=entryType==='expense';
+ $('splitToggleBtn').classList.toggle('hidden',!allow);
+ $('splitBox').classList.toggle('hidden',!allow||!splitEnabled);
+ $('singleCategoryField').classList.toggle('hidden',allow&&splitEnabled);
+ $('amountInput').readOnly=allow&&splitEnabled;
+ $('amountInput').classList.toggle('derived-amount',allow&&splitEnabled);
+ $('amountLabel').textContent=allow&&splitEnabled?'订单总金额（明细自动汇总）':'金额（人民币）';
+ $('splitToggleBtn').textContent=splitEnabled?'－ 取消拆分记账':'＋ 开启拆分记账';
+ $('splitToggleBtn').disabled=Boolean(editingId&&refundedCents(state.records.find(x=>x.id===editingId)||{type:'expense',refunds:[]}));
+ if(!splitEnabled)return;
+ $('splitRows').innerHTML=splitRows.map((row,i)=>`<div class="split-row" data-split-id="${esc(row.id)}"><select aria-label="拆分 ${i+1} 分类" class="split-cat">${optionCats('expense',(editingId?row.categoryId:''))}</select><input class="split-amount" inputmode="decimal" placeholder="金额" aria-label="拆分 ${i+1} 金额" value="${esc(row.amount||'')}"/><button type="button" class="split-remove" aria-label="删除拆分行">×</button><input class="split-note" maxlength="60" placeholder="第${i+1}项用途备注（选填）" aria-label="拆分 ${i+1} 备注" value="${esc(row.note||'')}"/></div>`).join('');
+ const elements=[...$('splitRows').querySelectorAll('[data-split-id]')];
+ elements.forEach((el,i)=>{const value=splitRows[i].categoryId;if([...el.querySelector('.split-cat').options].some(x=>x.value===value))el.querySelector('.split-cat').value=value});
+ updateSplitSum();
+}
+function syncSplitRows(){
+ const trs=$('splitRows').querySelectorAll('[data-split-id]');if(!trs.length)return;
+ splitRows=[...trs].map(el=>({id:el.dataset.splitId,categoryId:el.querySelector('.split-cat').value,amount:el.querySelector('.split-amount').value.trim(),note:el.querySelector('.split-note').value.trim()}));
+}
+function updateSplitSum(){
+ if(!splitEnabled)return;
+ const inputs=[...$('splitRows').querySelectorAll('.split-amount')],amounts=inputs.map(x=>parseAmount(x.value));
+ const allValid=inputs.length>=2&&amounts.every(x=>x!==null),total=amounts.reduce((a,b)=>a+(b||0),0);
+ $('amountInput').value=total>0?(total/100).toFixed(2):'';
+ const h=$('splitTotalHint');h.textContent=`明细合计 ${fmt(total)} · 自动作为订单总额${allValid?' · 金额已对齐':' · 请填写至少两项有效金额'}`;
+ h.classList.toggle('error',!allValid);
+}
+function openCategories(){renderCategoryManager();openOverlay('categories')}
+function renderCategoryManager(){
+ $('catExpenseTab').classList.toggle('active',manageCatType==='expense');$('catIncomeTab').classList.toggle('active',manageCatType==='income');
+ const list=manageCatType==='expense'?expenseCategories:incomeCategories;
+ $('categoryManageList').innerHTML=list.map(cat=>{
+  const custom=state.customCategories.some(x=>x.id===cat.id),hidden=state.hiddenCategoryIds.includes(cat.id);
+  return `<div class="manage-row"><div><strong>${esc(cat.emoji)} ${esc(cat.name)} ${custom?'· 自定义':''}</strong><span>${hidden?'已隐藏（历史仍保留）':'可用于新记账'}</span></div><div class="manage-actions">${custom?`<button type="button" data-cat-edit="${esc(cat.id)}">改名</button><button type="button" class="danger-text" data-cat-delete="${esc(cat.id)}">删除</button>`:''}<button type="button" data-cat-hide="${esc(cat.id)}">${hidden?'显示':'隐藏'}</button></div></div>`;
+ }).join('');
+}
+function customCategoryUsed(id){return state.records.some(r=>r.categoryId===id||r.splits?.some(sp=>sp.categoryId===id))||state.templates.some(t=>t.categoryId===id||t.splits?.some(sp=>sp.categoryId===id))||state.recurringRules.some(r=>r.categoryId===id)||Object.values(state.budgets).some(b=>id in b.categories)}
+function openBudget(){const b=getBudget(viewMonth);$('budgetMonthTip').textContent='正在设置 '+viewMonth+' 的预算。家庭总预算自动排除「公司支出」「副业支出」，两类可独立设置分类预算。';$('budgetTotalInput').value=b.totalCents?(b.totalCents/100).toFixed(2):'';$('budgetError').textContent='';renderBudgetRows(Object.entries(b.categories).map(([id,cents])=>({id,amount:(cents/100).toFixed(2)})));openOverlay('budget')}
+function renderBudgetRows(rows){$('budgetRows').innerHTML=rows.map(x=>`<div class="budget-row"><select class="budget-cat">${optionCats('expense',x.id)}</select><input class="budget-amount" type="number" min="0.01" step="0.01" value="${esc(x.amount)}" placeholder="预算金额"/><button type="button" class="budget-remove" aria-label="删除分类预算">×</button></div>`).join('')}
+function readBudgetRows(){return [...$('budgetRows').querySelectorAll('.budget-row')].map(el=>({id:el.querySelector('.budget-cat').value,amount:el.querySelector('.budget-amount').value}))}
+function openRecurring(){renderRules();resetRuleForm();openOverlay('recurring')}
+function renderRules(){
+ $('recurringRulesList').innerHTML=state.recurringRules.length?state.recurringRules.map(r=>`<div class="manage-row"><div><strong>${esc(r.name)} · ${fmt(r.cents)}</strong><span>${r.frequency==='monthly'?'每月 '+r.day+' 号':'每年 '+r.month+' 月 '+r.day+' 号'} · ${r.enabled?'启用':'暂停'} · 从 ${esc(r.startDate)} 开始</span></div><div class="manage-actions"><button data-rule-toggle="${esc(r.id)}">${r.enabled?'暂停':'启用'}</button><button data-rule-edit="${esc(r.id)}">编辑</button><button class="danger-text" data-rule-delete="${esc(r.id)}">删除</button></div></div>`).join(''):'<div class="feature-empty">还没有设置周期支出。下面可新建房租、物业、社保等周期账单。</div>';
+}
+function resetRuleForm(){editingRuleId=null;$('ruleFormTitle').textContent='新增周期账单';$('saveRuleBtn').textContent='保存周期账单';$('ruleName').value='';$('ruleAmount').value='';$('ruleCategory').innerHTML=optionCats('expense');$('ruleCategory').value=expenseCategories.some(c=>c.id==='rent')?'rent':catsFor('expense')[0]?.id||'food';$('ruleChannel').value='直接缴费/转账';$('ruleFrequency').value='monthly';$('ruleDay').value='1';$('ruleStart').value=dateForViewedMonth();$('ruleNote').value='';$('ruleError').textContent='';$('ruleMonthField').classList.add('hidden');$('ruleMonth').innerHTML=Array.from({length:12},(_,i)=>`<option value="${i+1}">${i+1}月</option>`).join('');$('ruleMonth').value=Number(viewMonth.slice(5))}
+function fillRuleForm(r){editingRuleId=r.id;$('ruleFormTitle').textContent='编辑周期账单';$('saveRuleBtn').textContent='保存修改';$('ruleName').value=r.name;$('ruleAmount').value=(r.cents/100).toFixed(2);$('ruleCategory').innerHTML=optionCats('expense',r.categoryId);$('ruleCategory').value=r.categoryId;$('ruleChannel').value=r.channel;$('ruleFrequency').value=r.frequency;$('ruleDay').value=r.day;$('ruleMonth').value=r.month;$('ruleStart').value=r.startDate;$('ruleNote').value=r.note;$('ruleMonthField').classList.toggle('hidden',r.frequency!=='yearly');$('ruleError').textContent=''}
+
+// Quick templates
+$('templatesList').addEventListener('click',e=>{const b=e.target.closest('[data-template]');if(!b)return;const t=state.templates.find(x=>x.id===b.dataset.template);if(t){if(t.splits?.some(x=>state.hiddenCategoryIds.includes(x.categoryId))||(!t.splits?.length&&state.hiddenCategoryIds.includes(t.categoryId))){toast('模板含隐藏分类，请先在分类管理中恢复该分类');return}const splits=t.splits?.map(x=>({id:idNew(),categoryId:x.categoryId,cents:x.cents,amount:(x.cents/100).toFixed(2),note:x.note||''}));openEntry(null,t.type,{...t,cents:t.splits?.reduce((a,x)=>a+x.cents,0)||undefined,splits})}});
+$('manageTemplatesBtn').addEventListener('click',()=>{renderTemplateManager();openOverlay('templates')});
+$('templatesManageList').addEventListener('click',async e=>{const target=e.target.closest('[data-template-delete],[data-template-use]');if(!target)return;const id=target.dataset.templateDelete||target.dataset.templateUse,t=state.templates.find(x=>x.id===id);if(!t)return;if(target.dataset.templateUse){closeModal('templates');$('templatesList').querySelector(`[data-template="${id}"]`)?.click();if(!$('entryOverlay').classList.contains('hidden'))return;if(t.splits?.some(x=>state.hiddenCategoryIds.includes(x.categoryId))||(!t.splits?.length&&state.hiddenCategoryIds.includes(t.categoryId))){toast('模板含隐藏分类，请先恢复显示');return}const splits=t.splits?.map(x=>({...x,id:idNew(),amount:(x.cents/100).toFixed(2),note:x.note||''}));openEntry(null,t.type,{...t,cents:splits?.reduce((a,x)=>a+x.cents,0)||undefined,splits});return}
+ if(confirm(`删除快捷模板「${t.name}」吗？已有记账不受影响。`))if(await commit({...state,templates:state.templates.filter(x=>x.id!==id)}))toast('模板已删除');});
+$('saveTemplateCheck').addEventListener('change',e=>$('templateNameInput').classList.toggle('hidden',!e.target.checked));
+// Split rows
+$('splitToggleBtn').addEventListener('click',()=>{syncSplitRows();splitEnabled=!splitEnabled;if(splitEnabled&&splitRows.length<2){const a=entryCategory,b=catsFor('expense').find(c=>c.id!==a)?.id||a;splitRows=[{id:idNew(),categoryId:a,amount:'',note:''},{id:idNew(),categoryId:b,amount:'',note:''}]}renderSplit()});
+$('addSplitBtn').addEventListener('click',()=>{syncSplitRows();splitRows.push({id:idNew(),categoryId:catsFor('expense')[0]?.id||'food',amount:'',note:''});renderSplit()});
+$('splitRows').addEventListener('click',e=>{if(!e.target.closest('.split-remove'))return;syncSplitRows();const id=e.target.closest('[data-split-id]').dataset.splitId;const old=state.records.find(r=>r.id===editingId);if(old?.refunds?.some(x=>x.splitId===id)){alert('这条拆分明细有对应退款，需先删除其退款才能删除该明细。');return}splitRows=splitRows.filter(x=>x.id!==id);renderSplit()});
+$('splitRows').addEventListener('input',e=>{if(e.target.classList.contains('split-amount'))updateSplitSum()});
+// Categories
+$('catExpenseTab').addEventListener('click',()=>{manageCatType='expense';renderCategoryManager()});$('catIncomeTab').addEventListener('click',()=>{manageCatType='income';renderCategoryManager()});
+$('addCategoryBtn').addEventListener('click',async()=>{const name=$('newCatName').value.trim(),emoji=$('newCatEmoji').value.trim()||'📌';if(!name||name.length>16||[...expenseCategories,...incomeCategories].some(x=>x.name===name)){alert('请输入不超过16字、且不与现有分类重复的名称。');return}const c={id:'custom-'+idNew().toLowerCase().replace(/[^a-z0-9-]/g,'-'),name,emoji,color:'#74a695',tone:'#eff7f1',type:manageCatType};if(await commit({...state,customCategories:[...state.customCategories,c]})){$('newCatName').value='';$('newCatEmoji').value='';renderCategoryManager();toast('自定义分类已添加')}});
+$('categoryManageList').addEventListener('click',async e=>{const btn=e.target.closest('[data-cat-edit],[data-cat-delete],[data-cat-hide]');if(!btn)return;const id=btn.dataset.catEdit||btn.dataset.catDelete||btn.dataset.catHide,c=allCat.get(id);if(!c)return;
+ if(btn.dataset.catHide){const current=state.hiddenCategoryIds;const next=current.includes(id)?current.filter(x=>x!==id):[...current,id];if(await commit({...state,hiddenCategoryIds:next}))renderCategoryManager();return}
+ if(btn.dataset.catEdit){const name=prompt('修改自定义分类名称：',c.name)?.trim();if(name===undefined||name===c.name)return;if(!name||name.length>16||[...expenseCategories,...incomeCategories].some(x=>x.id!==id&&x.name===name)){alert('名称无效或与现有分类重复。');return}if(await commit({...state,customCategories:state.customCategories.map(x=>x.id===id?{...x,name}:x)}))renderCategoryManager();return}
+ if(customCategoryUsed(id)){alert('该分类已用于账目、模板、预算或周期账单，不能删除。你可以先隐藏。');return}
+ if(confirm(`删除自定义分类「${c.name}」吗？`))if(await commit({...state,customCategories:state.customCategories.filter(x=>x.id!==id),hiddenCategoryIds:state.hiddenCategoryIds.filter(x=>x!==id)}))renderCategoryManager();
+});
+// Budget
+$('manageBudgetBtn').addEventListener('click',openBudget);$('addBudgetRowBtn').addEventListener('click',()=>renderBudgetRows([...readBudgetRows(),{id:catsFor('expense')[0]?.id||'food',amount:''}]));
+$('budgetRows').addEventListener('click',e=>{if(e.target.closest('.budget-remove'))e.target.closest('.budget-row').remove()});
+$('copyBudgetBtn').addEventListener('click',()=>{const last=shiftMonthKey(viewMonth,-1);if(!last)return;const b=getBudget(last);$('budgetTotalInput').value=b.totalCents?(b.totalCents/100).toFixed(2):'';renderBudgetRows(Object.entries(b.categories).map(([id,cents])=>({id,amount:(cents/100).toFixed(2)})));toast('已复制上个月的预算到编辑表单，点击保存后生效')});
+$('saveBudgetBtn').addEventListener('click',async()=>{const raw=$('budgetTotalInput').value.trim(),total=raw===''?0:parseAmount(raw),rows=readBudgetRows(),categories={};if(total===null||total<0){$('budgetError').textContent='总预算金额无效。';return}for(const row of rows){const amt=parseAmount(row.amount);if(amt===null||categories[row.id]){$('budgetError').textContent='分类预算金额无效，或有重复分类。';return}categories[row.id]=amt}const b={totalCents:total,categories};if(await commit({...state,budgets:{...state.budgets,[viewMonth]:b}})){closeModal('budget');toast('月度预算已保存')}});
+// Recurring rules
+$('manageRecurringBtn').addEventListener('click',openRecurring);$('ruleFrequency').addEventListener('change',()=>{$('ruleMonthField').classList.toggle('hidden',$('ruleFrequency').value!=='yearly')});$('resetRuleBtn').addEventListener('click',resetRuleForm);
+$('ruleForm').addEventListener('submit',async e=>{e.preventDefault();const cents=parseAmount($('ruleAmount').value),rule={id:editingRuleId||idNew(),name:$('ruleName').value.trim(),cents,categoryId:$('ruleCategory').value,channel:$('ruleChannel').value.trim(),frequency:$('ruleFrequency').value,day:Number($('ruleDay').value),month:Number($('ruleMonth').value),startDate:$('ruleStart').value,note:$('ruleNote').value.trim(),enabled:editingRuleId?state.recurringRules.find(x=>x.id===editingRuleId)?.enabled??true:true};if(!validRule(rule,allCat)){$('ruleError').textContent='周期规则无效，请核对名称、金额、分类、日期和渠道。';return}const updated=editingRuleId?state.recurringRules.map(x=>x.id===editingRuleId?rule:x):[...state.recurringRules,rule];if(await commit({...state,recurringRules:updated})){resetRuleForm();renderRules();toast('周期账单已保存')}});
+$('recurringRulesList').addEventListener('click',async e=>{const b=e.target.closest('[data-rule-edit],[data-rule-delete],[data-rule-toggle]');if(!b)return;const id=b.dataset.ruleEdit||b.dataset.ruleDelete||b.dataset.ruleToggle,r=state.recurringRules.find(x=>x.id===id);if(!r)return;
+ if(b.dataset.ruleEdit){fillRuleForm(r);return}
+ if(b.dataset.ruleToggle){if(await commit({...state,recurringRules:state.recurringRules.map(x=>x.id===id?{...x,enabled:!x.enabled}:x)}))renderRules();return}
+ if(confirm(`删除周期规则「${r.name}」吗？已经确认支付的流水仍然保留。`)){if(await commit({...state,recurringRules:state.recurringRules.filter(x=>x.id!==id)}))renderRules()}
+});
+$('recurringDueList').addEventListener('click',async e=>{
+ const b=e.target.closest('[data-due],[data-due-edit],[data-due-link],[data-due-new]');if(!b)return;
+ if(b.dataset.dueEdit){openEntry(b.dataset.dueEdit);return}
+ const ruleId=b.dataset.due||b.dataset.dueLink||b.dataset.dueNew;
+ const rule=state.recurringRules.find(x=>x.id===ruleId);if(!rule)return;
+ const period=viewMonth,due=recurringDue(rule,period);
+ if(!due||state.records.some(x=>x.recurringId===rule.id&&x.recurringPeriod===period))return;
+ const candidates=recurringCandidates(rule,due);
+ if(b.dataset.dueLink){
+  const candidate=candidates[0];if(!candidate)return;
+  if(!confirm(`发现已记录的相似支出：${candidate.date} · ${allCat.get(candidate.categoryId)?.name} · ${fmt(candidate.cents)}。\n确认将其关联到「${rule.name}」${period}（不会新增消费记录）？`))return;
+  if(await commit({...state,records:state.records.map(r=>r.id===candidate.id?{...r,recurringId:rule.id,recurringPeriod:period,updatedAt:new Date().toISOString()}:r)}))toast('已关联已有支出，未重复计入');
+  return;
+ }
+ if(b.dataset.dueNew&&candidates.length&&!confirm(`已存在 ${candidates.length} 笔相似账目。\n确定另记一笔吗？这会额外计入当月支出。`))return;
+ openEntry(null,'expense',{type:'expense',categoryId:rule.categoryId,channel:rule.channel,note:rule.note||rule.name,cents:rule.cents,date:due,ruleId:rule.id,rulePeriod:period});
+});
+// Detailed filters
+for(const id of ['filterScope','filterCategory','filterChannel','filterMin','filterMax','filterFrom','filterTo']){
+ $(id).addEventListener('input',()=>{filterScope=$('filterScope').value;filterCategory=$('filterCategory').value;filterChannel=$('filterChannel').value;filterMin=$('filterMin').value;filterMax=$('filterMax').value;filterFrom=$('filterFrom').value;filterTo=$('filterTo').value;render()});
+}
+$('resetFiltersBtn').addEventListener('click',()=>{filter='all';query='';filterScope='month';filterCategory='';filterChannel='';filterMin='';filterMax='';filterFrom='';filterTo='';$('searchInput').value='';for(const id of ['filterMin','filterMax','filterFrom','filterTo'])$(id).value='';render()});
+$('refundSplitSelect').addEventListener('change',updateRefundSplitHint);
+
+$('quickIncomeBtn').addEventListener('click',()=>openEntry(null,'income'));$('quickExpenseBtn').addEventListener('click',()=>openEntry(null,'expense'));document.querySelectorAll('[data-chart-mode]').forEach(btn=>btn.addEventListener('click',()=>{chartMode=btn.dataset.chartMode;render()}));
+$('addHeaderBtn').addEventListener('click',()=>openEntry());$('addSmallBtn').addEventListener('click',()=>openEntry());$('fabBtn').addEventListener('click',()=>openEntry());$('settingsBtn').addEventListener('click',openSettings);$('prevMonthBtn').addEventListener('click',()=>monthShift(-1));$('nextMonthBtn').addEventListener('click',()=>monthShift(1));$('thisMonthBtn').addEventListener('click',()=>{viewMonth=monthToday();trendEndMonth=viewMonth;viewYear=Number(viewMonth.slice(0,4));render()});$('csvHeaderBtn').addEventListener('click',exportCsv);
+$('searchInput').addEventListener('input',e=>{query=e.target.value.trim().toLowerCase();render()});document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.filter;render()}));
+$('entryList').addEventListener('click',async e=>{if(e.target.id==='emptyAddBtn'){openEntry();return}const b=e.target.closest('[data-action]');if(!b)return;const r=state.records.find(x=>x.id===b.dataset.id);if(!r)return;
+ if(b.dataset.action==='edit'){openEntry(r.id);return}
+ if(b.dataset.action==='refund'||b.dataset.action==='edit-refund'){openRefund(r.id,b.dataset.action==='edit-refund'?b.dataset.refundId:null);return}
+ if(b.dataset.action==='delete-refund'){const ref=(r.refunds||[]).find(x=>x.id===b.dataset.refundId);if(!ref)return;if(!confirm(`确定删除 ${ref.date} 的退款 ${fmt(ref.cents)} 吗？删除后会恢复对应支出金额。`))return;const updated={...r,refunds:r.refunds.filter(x=>x.id!==ref.id),updatedAt:new Date().toISOString()};if(await commit({...state,records:state.records.map(x=>x.id===r.id?updated:x)}))toast('已删除退款记录，原支出重新计入统计');return}
+ const refundHint=refundedCents(r)?`\n这笔支出关联 ${r.refunds.length} 笔退款 ${fmt(refundedCents(r))}，删除后退款记录也会一起删除。`:'';
+ if(confirm(`确定删除 ${r.date} 的 ${allCat.get(r.categoryId).name} ${fmt(r.cents)} 吗？${refundHint}`)){if(await commit({...state,records:state.records.filter(x=>x.id!==r.id)}))toast(storageMode==='session'?'已删除，并自动下载最新备份':'已删除这笔记录')}
+});
+$('categoryManageBtn').addEventListener('click',openCategories);
+$('categoryPicks').addEventListener('click',e=>{const b=e.target.closest('[data-category]');if(!b)return;entryCategory=b.dataset.category;renderCats()});document.querySelectorAll('[data-entry-type]').forEach(b=>b.addEventListener('click',()=>{entryType=b.dataset.entryType;entryCategory=(entryType==='expense'?'food':'salary');splitEnabled=false;splitRows=[];renderSplit();renderCats();renderChannelOptions('');updateChannelVisibility()}));$('entryForm').addEventListener('submit',saveEntry);$('refundForm').addEventListener('submit',saveRefund);$('amountInput').addEventListener('input',()=>{$('entryError').textContent=''});document.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',()=>closeModal(b.dataset.close)));
+['entry','refund','settings','templates','categories','budget','recurring'].forEach(name=>{$(name+'Overlay').addEventListener('click',e=>{if(e.target===$(name+'Overlay'))closeModal(name)})});document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('refundOverlay').classList.contains('hidden'))closeModal('refund');else if(!$('entryOverlay').classList.contains('hidden'))closeModal('entry');else for(const name of ['entry','settings','templates','categories','budget','recurring'])if(!$(name+'Overlay').classList.contains('hidden')){closeModal(name);break}}});
+$('exportJsonBtn').addEventListener('click',exportJson);$('exportCsvBtn').addEventListener('click',exportCsv);$('mergeBtn').addEventListener('click',()=>{importMode='merge';$('importFile').value='';$('importFile').click()});$('restoreBtn').addEventListener('click',()=>{importMode='replace';$('importFile').value='';$('importFile').click()});$('importFile').addEventListener('change',e=>importData(e.target.files?.[0]));$('clearAllBtn').addEventListener('click',async ()=>{if(!state.records.length&&!state.templates.length&&!state.recurringRules.length&&!Object.keys(state.budgets).length&&!state.customCategories.length){toast('当前没有记录和设置');return}if(!confirm(`确定清空本机的 ${state.records.length} 笔记录吗？\n请先备份。`))return;if(!confirm('再次确认：删除后无法撤销。是否继续？'))return;if(await commit({schemaVersion:5,currency:'CNY',records:[],customCategories:[],hiddenCategoryIds:[],templates:[],recurringRules:[],budgets:{}})){closeModal('settings');toast('已清空本机记录')}});
+$('channelSelect').addEventListener('change',updateChannelVisibility);
+$('customChannelInput').addEventListener('input',()=>{$('entryError').textContent=''});$('refundAmountInput').addEventListener('input',()=>{$('refundError').textContent=''});
+$('prevYearBtn').addEventListener('click',()=>{if(viewYear>1900){viewYear--;render()}});
+$('nextYearBtn').addEventListener('click',()=>{if(viewYear<9999){viewYear++;render()}});
+$('thisYearBtn').addEventListener('click',()=>{viewYear=Number(today().slice(0,4));render()});
+$('prevTrendBtn').addEventListener('click',()=>{const key=shiftMonthKey(trendEndMonth,-6);if(key){trendEndMonth=key;render()}});
+$('nextTrendBtn').addEventListener('click',()=>{const key=shiftMonthKey(trendEndMonth,6);if(key){trendEndMonth=key;render()}});
+$('resetTrendBtn').addEventListener('click',()=>{trendEndMonth=viewMonth;render()});
+$('trendChart').addEventListener('click',e=>{const b=e.target.closest('[data-trend-month]');if(!b)return;viewMonth=b.dataset.trendMonth;viewYear=Number(viewMonth.slice(0,4));render()});
+$('trendChart').addEventListener('mouseover',e=>{const b=e.target.closest('[data-trend-month]');if(b)describeTrend(b.dataset.trendMonth)});
+$('trendChart').addEventListener('focusin',e=>{const b=e.target.closest('[data-trend-month]');if(b)describeTrend(b.dataset.trendMonth)});
+$('trendChart').addEventListener('mouseleave',()=>describeTrend(trendData.some(x=>x.key===viewMonth)?viewMonth:trendData[trendData.length-1]?.key));
+document.querySelectorAll('[data-channel-scope]').forEach(b=>b.addEventListener('click',()=>{channelScope=b.dataset.channelScope;render()}));
+initStorage();
+})();
+</script>
+<script src="./pwa.js" defer></script>
+</body>
+</html>
