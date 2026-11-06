@@ -1,9 +1,9 @@
-/* 简记 PWA service worker v1.1.0. Never intercept ledger data or backup downloads. */
+/* 简记 PWA service worker v1.1.1. Never intercept ledger data or backup downloads. */
 'use strict';
-const CACHE_NAME = 'jianji-shell-v1.1.0';
+const CACHE_NAME = 'jianji-shell-v1.1.1';
 const CACHE_PREFIX = 'jianji-shell-';
 const SHELL_FILES = [
-  './index.html', './pwa.js', './manifest.webmanifest',
+  './index.html', './pwa.js', './navigation.js', './manifest.webmanifest',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-maskable-512.png'
 ];
 const SHELL_URLS = SHELL_FILES.map(path => new URL(path, self.registration.scope).href);

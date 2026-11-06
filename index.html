@@ -12,7 +12,7 @@
 <link rel="manifest" href="./manifest.webmanifest" />
 <link rel="icon" type="image/png" href="./icons/icon-192.png" sizes="192x192" />
 <link rel="apple-touch-icon" href="./icons/icon-192.png" />
-<title>简记 · 家庭记账 V1.1.0</title>
+<title>简记 · 家庭记账 V1.1.1</title>
 <style>
   :root{--bg:#f5f7f4;--surface:#fff;--ink:#1d302b;--muted:#73847c;--border:#e8eee9;--accent:#147e66;--accent-light:#e4f5ee;--navy:#123e32;--warn:#d37643;--shadow:0 12px 34px rgba(32,60,47,.055);--radius:22px}
   *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",PingFang SC,"Noto Sans CJK SC",sans-serif;font-size:14px;-webkit-font-smoothing:antialiased}button,input,textarea{font:inherit}button{cursor:pointer}button:disabled{opacity:.45;cursor:not-allowed}button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #9bd7c4;outline-offset:2px}button{touch-action:manipulation}a{color:var(--accent)}.hidden{display:none!important}.app{max-width:1120px;margin:0 auto;padding:29px 28px 90px}
@@ -81,12 +81,82 @@
   .pwa-buttons{display:flex;gap:9px;flex-wrap:wrap;margin-top:11px}
   .pwa-help{margin-top:11px!important;line-height:1.6}
   @media(max-width:550px){.pwa-banner{align-items:flex-start;flex-direction:column;padding:11px 12px}.pwa-banner .pwa-banner-actions{width:100%}.pwa-mini{min-height:44px}.pwa-buttons>.outline-btn{min-height:44px}.modal{max-height:calc(100dvh - 25px)}}
+
+/* V1.1.1 presentation-only navigation. Existing business widgets and IDs are unchanged. */
+.jianji-page[hidden], .jianji-stat-panel[hidden] {display:none!important}
+.jianji-page {animation:jianji-page-appear .18s ease-out}
+@keyframes jianji-page-appear {from{opacity:.72;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.jianji-desktop-nav {display:flex;gap:8px;align-items:center;background:#ffffffb8;border:1px solid var(--border);border-radius:16px;padding:7px;margin:0 0 24px;position:sticky;top:9px;z-index:30;backdrop-filter:blur(18px);box-shadow:0 5px 24px #123e320b}
+.jianji-nav-item {display:flex;align-items:center;gap:9px;justify-content:center;min-height:44px;padding:10px 23px;background:transparent;border:0;border-radius:11px;color:#7c8e84;font-weight:700;transition:background .14s,color .14s}
+.jianji-nav-item.active {background:#e7f4ed;color:var(--accent)}
+.jianji-nav-item:hover:not(.active){background:#f0f5f1;color:var(--ink)}
+.jianji-nav-item svg {width:19px;height:19px}
+.jianji-mobile-nav {display:none}
+.jianji-pagehead {display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:22px}
+.jianji-pagehead .subheading {line-height:1.5}
+.jianji-month-switch {display:flex;align-items:center;gap:7px;flex-wrap:nowrap}
+.jianji-month-switch .icon-btn {width:34px;height:34px;flex:none}
+.jianji-month-label {white-space:nowrap;font-size:13px;font-weight:750;min-width:91px;text-align:center}
+.jianji-month-switch .outline-btn {padding:7px 11px;font-size:12px;min-height:34px}
+#ledgerPage .dashboard {display:block;margin-top:0}
+#ledgerPage .dashboard>.panel {width:100%}
+#statsPage .category-panel {width:100%}
+#statsPage .category-panel .ring-area {justify-content:center}
+.jianji-stats-switch{display:flex;gap:7px;background:#eaf1eb;padding:5px;border-radius:13px;max-width:330px;margin:0 0 20px}
+.jianji-stats-btn{flex:1;border:0;background:transparent;color:var(--muted);border-radius:9px;padding:12px 17px;font-weight:720;min-height:43px}
+.jianji-stats-btn.active{color:var(--accent);background:#fff;box-shadow:0 2px 10px #123e3214}
+.jianji-statbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 13px;padding:0 2px}
+#statsPage .trends-panel {margin-top:19px}
+#statsPage .annual-section {margin-top:0}
+.jianji-manage-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
+.jianji-manage-card .panel-head{padding-bottom:18px}
+.jianji-manage-actions {padding:0 15px 14px}
+.jianji-manage-action {width:100%;display:flex;align-items:center;gap:14px;text-align:left;padding:16px 11px;background:#fff;border:0;border-top:1px solid var(--border);min-height:76px;color:var(--ink)}
+.jianji-manage-action:hover {background:#f7faf8}
+.jianji-manage-action:focus-visible {outline:2px solid #8dcdb6;outline-offset:-2px;border-radius:9px}
+.jianji-manage-action>span:nth-child(2){display:flex;flex-direction:column;gap:6px;flex:1;min-width:0}
+.jianji-manage-action strong{font-size:14px;font-weight:740}
+.jianji-manage-action small{font-size:12px;color:var(--muted);line-height:1.4}
+.jianji-manage-action>b{color:#9aafa4;font-size:24px;font-weight:400}
+.jianji-manage-glyph{display:grid;place-items:center;width:40px;height:40px;background:#eaf5ed;border-radius:12px;font-size:20px;color:#1b8a6b;flex:none}
+.jianji-managed-note {font-size:12px;color:var(--muted);line-height:1.8;margin:20px 2px}
+@media(max-width:790px){
+  .jianji-desktop-nav {display:none}
+  .app{padding-bottom:calc(119px + env(safe-area-inset-bottom))}
+  .fab {display:none!important}
+  .head-actions #categoryManageBtn,.head-actions #settingsBtn {display:none}
+  .jianji-mobile-nav{position:fixed;bottom:0;left:0;right:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:stretch;z-index:55;padding:8px max(10px,env(safe-area-inset-right)) calc(7px + env(safe-area-inset-bottom)) max(10px,env(safe-area-inset-left));background:#fffffff5;border-top:1px solid #e5eee8;box-shadow:0 -6px 25px #102b2012;backdrop-filter:blur(17px)}
+  .jianji-mobile-item{border:0;background:transparent;color:#83928a;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:3px;min-height:51px;border-radius:12px;font-size:11px;font-weight:650;padding:3px 0}
+  .jianji-mobile-item.active{color:var(--accent)}
+  .jianji-mobile-item.active svg{stroke-width:2.25}
+  .jianji-mobile-add{color:var(--accent);position:relative;top:-9px}
+  .jianji-add-icon{width:49px;height:49px;border-radius:17px;display:grid;place-items:center;background:var(--accent);color:#fff;box-shadow:0 8px 18px #147e6640}
+  .jianji-mobile-add .jianji-add-icon svg{width:26px;height:26px;stroke-width:2.5}
+  .jianji-pagehead{flex-wrap:wrap;align-items:center;gap:12px;margin-bottom:17px}
+  .jianji-pagehead>.jianji-month-switch{margin-left:auto}
+  .jianji-manage-grid{grid-template-columns:1fr;gap:13px}
+  .jianji-manage-card .panel-head{padding-bottom:11px}
+  .jianji-manage-action {min-height:72px}
+  .jianji-statbar{flex-wrap:wrap}
+  #statsPage .category-panel .ring-area {justify-content:flex-start}
+}
+@media(max-width:480px){
+  .jianji-pagehead .heading{font-size:21px}
+  .jianji-month-label{font-size:12px;min-width:77px}
+  .jianji-month-switch{gap:4px}
+  .jianji-month-switch .icon-btn{width:31px;height:31px}
+  .jianji-month-switch .outline-btn{display:none}
+  .jianji-statbar .panel-title{font-size:15px}
+  .jianji-stats-switch{max-width:100%}
+  #ledgerPage .filter-grid{gap:9px}
+}
+@media(prefers-reduced-motion:reduce){.jianji-page{animation:none}}
 </style>
 </head>
 <body>
 <div class="app">
 <header class="header">
- <div class="brand"><div class="brand-icon" aria-hidden="true">记</div><div><div class="brand-name">简记 <span style="font-size:11px;font-weight:500;color:#8d9e93">v1.1.0</span></div><div class="brand-desc">认真记下每一笔生活</div></div></div>
+ <div class="brand"><div class="brand-icon" aria-hidden="true">记</div><div><div class="brand-name">简记 <span style="font-size:11px;font-weight:500;color:#8d9e93">v1.1.1</span></div><div class="brand-desc">认真记下每一笔生活</div></div></div>
  <div class="head-actions"><button type="button" class="ghost-btn export-header" id="csvHeaderBtn">导出表格</button><button type="button" class="ghost-btn" id="categoryManageBtn">分类管理</button><button type="button" class="ghost-btn" id="settingsBtn">备份与设置</button><button type="button" class="primary-btn desktop-add" id="addHeaderBtn"><span class="plus">＋</span>记一笔</button></div>
 </header>
 <div id="storageBanner" class="storage-banner hidden" role="alert"></div>
@@ -94,6 +164,9 @@
   <span id="pwaUpdateMessage">发现新的简记版本。请先保存正在填写的记录，再更新应用。</span>
   <span class="pwa-banner-actions"><button class="pwa-mini primary" id="pwaApplyUpdate" type="button">更新应用</button><button class="pwa-mini" id="pwaDismissUpdate" type="button">稍后</button></span>
 </div>
+<nav class="jianji-desktop-nav" aria-label="主导航">
+<button type="button" class="jianji-nav-item active" data-page-nav="home" aria-controls="homePage" aria-current="page"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><span>首页</span></button><button type="button" class="jianji-nav-item" data-page-nav="ledger" aria-controls="ledgerPage" aria-current="false"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h6"/></svg><span>流水</span></button><button type="button" class="jianji-nav-item" data-page-nav="stats" aria-controls="statsPage" aria-current="false"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V11M10 19V6M16 19V13M22 19H2"/><circle cx="16" cy="7" r="2"/></svg><span>统计</span></button><button type="button" class="jianji-nav-item" data-page-nav="manage" aria-controls="managePage" aria-current="false"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18"/><path d="M12 8v4l3 2M20 4l1-1"/></svg><span>管理</span></button></nav>
+<section class="jianji-page" id="homePage" data-page-view="home" aria-label="首页">
 <section aria-label="月度概况">
  <div class="topline"><div><h1 class="heading">我的收支</h1><p class="subheading">收入、支出与结余，按月看得更清楚</p></div><div class="month-switch"><button type="button" class="icon-btn" id="prevMonthBtn" aria-label="上个月">‹</button><span id="monthLabel" class="month-label"></span><button type="button" class="icon-btn" id="nextMonthBtn" aria-label="下个月">›</button><button type="button" class="outline-btn today-btn" id="thisMonthBtn">本月</button></div></div>
  <div class="money-cards">
@@ -119,15 +192,26 @@
  <article class="panel budget-panel"><div class="panel-head"><div><h2 class="panel-title">🎯 月度预算</h2><p class="panel-desc">只统计家庭预算 · 公司和副业单独核算</p></div><button class="outline-btn" type="button" id="manageBudgetBtn">设置预算</button></div><div class="feature-body" id="budgetSummary"></div></article>
 </section>
 <section class="panel recurring-panel" aria-label="固定周期账单"><div class="panel-head"><div><h2 class="panel-title">📅 固定周期支出</h2><p class="panel-desc">每月 / 每年生成待确认账单，只有确认支付才计入支出</p></div><button class="outline-btn" type="button" id="manageRecurringBtn">管理周期账单</button></div><div class="recurring-strip" id="recurringDueList"></div></section>
+</section>
+<section class="jianji-page" id="ledgerPage" data-page-view="ledger" aria-label="收支流水" hidden>
+<div class="jianji-pagehead"><div><h1 class="heading">收支流水</h1><p class="subheading">搜索、筛选、编辑和退款都在这里</p></div><div class="jianji-month-switch" aria-label="切换查看月份"><button type="button" class="icon-btn" data-forward="prevMonthBtn" aria-label="上个月">‹</button><span class="jianji-month-label" id="ledgerMonthLabel">—</span><button type="button" class="icon-btn" data-forward="nextMonthBtn" aria-label="下个月">›</button><button type="button" class="outline-btn jianji-back-current" data-forward="thisMonthBtn">本月</button></div></div>
 <main class="dashboard">
  <section class="panel"><div class="panel-head"><div><h2 class="panel-title">收支明细</h2><p class="panel-desc">记录可编辑、删除或办理退款；支持按消费平台搜索</p></div><button type="button" class="outline-btn" id="addSmallBtn">＋ 新增</button></div><div class="toolbar"><div class="search-wrap"><span class="search-icon" aria-hidden="true">⌕</span><input class="search" id="searchInput" type="search" placeholder="搜索备注、分类或消费平台" aria-label="搜索收支明细" maxlength="80" /></div><div class="filters" aria-label="按类型筛选"><button type="button" class="filter-btn active" data-filter="all">全部</button><button type="button" class="filter-btn" data-filter="expense">支出</button><button type="button" class="filter-btn" data-filter="income">收入</button></div></div><div class="advanced-filters"><div class="advanced-filters-hd"><strong>组合筛选</strong><span>仅影响下方流水，不改变汇总报表</span><button type="button" class="text-btn" id="resetFiltersBtn">重置筛选</button></div>
 <div class="filter-grid"><label>时间范围<select id="filterScope"><option value="month">所选月份</option><option value="all">全部月份</option><option value="range">指定日期</option></select></label><label>分类<select id="filterCategory"><option value="">全部分类</option></select></label><label>消费平台<select id="filterChannel"><option value="">全部渠道</option></select></label><label>最低金额<input type="number" id="filterMin" min="0" step="0.01" placeholder="不限"/></label><label>最高金额<input type="number" id="filterMax" min="0" step="0.01" placeholder="不限"/></label><div class="range-dates hidden" id="filterRange"><label>开始日期<input id="filterFrom" type="date"/></label><label>截止日期<input id="filterTo" type="date"/></label></div></div><div class="filter-result" id="filterResult"></div></div><div class="entries" id="entryList" aria-live="polite"></div></section>
- <aside class="panel category-panel"><div class="panel-head analytics-head"><div><h2 class="panel-title" id="categoryTitle">支出分析</h2><p class="panel-desc" id="categorySubtitle">所选月份扣除退款后的支出金额与占比</p></div></div><div class="analysis-tabs" role="group" aria-label="切换收支分类统计"><button type="button" class="analysis-tab active" data-chart-mode="expense" aria-pressed="true">支出分类</button><button type="button" class="analysis-tab" data-chart-mode="income" aria-pressed="false">收入来源</button></div><div class="panel-body"><div class="ring-area"><div class="donut" id="donut"><div class="donut-text"><span id="donutCaption">支出合计</span><strong id="donutTotal">¥0</strong></div></div><div class="chart-info" id="categoryInfo">主要支出类别<b id="dominantCategory">暂无支出</b><span id="categoryInfoFoot">查看分类占比</span></div></div><div id="categoryList" class="category-list"></div><div class="tip"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 11v6m0-10v1"/></svg><span id="categoryFootnote">分类图统计所选月份全部支出，不受流水搜索和筛选影响。</span></div></div></aside>
 </main>
+</section>
+<section class="jianji-page" id="statsPage" data-page-view="stats" aria-label="收支统计" hidden>
+<div class="jianji-pagehead"><div><h1 class="heading">收支统计</h1><p class="subheading">月度和年度情况集中查看</p></div></div>
+<div class="jianji-stats-switch" role="group" aria-label="统计时间范围"><button type="button" class="jianji-stats-btn active" data-stats-mode="month" aria-pressed="true">月度统计</button><button type="button" class="jianji-stats-btn" data-stats-mode="year" aria-pressed="false">年度统计</button></div>
+<div id="jianjiMonthlyStats" class="jianji-stat-panel">
+<div class="jianji-statbar"><h2 class="panel-title">月度收支分析</h2><div class="jianji-month-switch" aria-label="切换查看月份"><button type="button" class="icon-btn" data-forward="prevMonthBtn" aria-label="上个月">‹</button><span class="jianji-month-label" id="statsMonthLabel">—</span><button type="button" class="icon-btn" data-forward="nextMonthBtn" aria-label="下个月">›</button><button type="button" class="outline-btn jianji-back-current" data-forward="thisMonthBtn">本月</button></div></div>
+ <aside class="panel category-panel"><div class="panel-head analytics-head"><div><h2 class="panel-title" id="categoryTitle">支出分析</h2><p class="panel-desc" id="categorySubtitle">所选月份扣除退款后的支出金额与占比</p></div></div><div class="analysis-tabs" role="group" aria-label="切换收支分类统计"><button type="button" class="analysis-tab active" data-chart-mode="expense" aria-pressed="true">支出分类</button><button type="button" class="analysis-tab" data-chart-mode="income" aria-pressed="false">收入来源</button></div><div class="panel-body"><div class="ring-area"><div class="donut" id="donut"><div class="donut-text"><span id="donutCaption">支出合计</span><strong id="donutTotal">¥0</strong></div></div><div class="chart-info" id="categoryInfo">主要支出类别<b id="dominantCategory">暂无支出</b><span id="categoryInfoFoot">查看分类占比</span></div></div><div id="categoryList" class="category-list"></div><div class="tip"><svg width="15" height="15" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 11v6m0-10v1"/></svg><span id="categoryFootnote">分类图统计所选月份全部支出，不受流水搜索和筛选影响。</span></div></div></aside>
 <section class="panel trends-panel" aria-label="近六个月收支趋势">
  <div class="panel-head trend-head"><div><h2 class="panel-title">六个月收支趋势</h2><p class="panel-desc">显示每月金额 · 点击月份切换月度账本，移入柱形查看精确数值</p></div><div class="trend-head-right"><div class="trend-legend"><span><i class="legend-dot legend-income"></i>收入</span><span><i class="legend-dot legend-expense"></i>支出</span></div><div class="trend-nav" aria-label="切换趋势统计区间"><button type="button" class="icon-btn" id="prevTrendBtn" aria-label="查看前六个月">‹</button><span id="trendPeriod" class="trend-period">六个月</span><button type="button" class="icon-btn" id="nextTrendBtn" aria-label="查看后六个月">›</button><button type="button" class="outline-btn" id="resetTrendBtn">回到所选月</button></div></div></div>
  <div class="trend-body"><div class="trend-chart" id="trendChart" aria-label="最近六个月收入和支出对比柱状图"></div><div class="trend-footer" id="trendFooter">每组柱形分别对应当月收入和支出</div></div>
 </section>
+</div>
+<div id="jianjiYearlyStats" class="jianji-stat-panel" hidden>
 <section class="annual-section" id="annualSection" aria-label="年度收支总览">
  <div class="annual-heading"><div><h2 class="heading" style="font-size:21px">年度收支总览</h2><p class="panel-desc">按自然年统计收入与扣除退款后的净支出，独立于流水筛选</p></div><div class="month-switch"><button type="button" class="icon-btn" id="prevYearBtn" aria-label="上一年">‹</button><span class="month-label" id="yearLabel">年度</span><button type="button" class="icon-btn" id="nextYearBtn" aria-label="下一年">›</button><button type="button" class="outline-btn today-btn" id="thisYearBtn">今年</button></div></div>
  <div class="annual-cards">
@@ -141,8 +225,39 @@
  </div>
  <section class="panel channel-panel" aria-label="消费渠道统计"><div class="panel-head channel-head"><div><h3 class="panel-title">消费平台 / 场所统计</h3><p class="panel-desc" id="channelScopeDescription">统计全年在京东、淘宝、盒马等平台和线下门店的支出</p></div><div class="analysis-tabs channel-scope" role="group" aria-label="消费渠道统计范围"><button type="button" class="analysis-tab" data-channel-scope="month" aria-pressed="false">所选月</button><button type="button" class="analysis-tab active" data-channel-scope="year" aria-pressed="true">所选年</button></div></div><div class="channel-body"><div class="channel-summary"><div class="donut annual-donut" id="channelDonut"><div class="donut-text"><span>渠道支出</span><strong id="channelDonutTotal">¥0</strong></div></div><div class="channel-summary-copy"><span>消费渠道统计</span><strong id="channelDominant">暂无记录</strong><p id="channelStat">可以在记支出时选择购买平台或消费场所</p></div></div><div class="category-list channel-list" id="channelList"></div></div><p class="channel-note" id="channelFootnote">消费分类与消费渠道分开统计；退款会冲减原消费月份、原分类和原渠道。</p></section>
 </section>
-<footer class="footer">简记 v1.1.0 · 无广告 · 无需注册 · 离线可用<br/><strong>正常模式下数据保存在当前设备浏览器中</strong>，无法跨设备同步；若浏览器禁止存储，将启用临时模式并自动下载 JSON 备份。</footer>
 </div>
+</section>
+<section class="jianji-page" id="managePage" data-page-view="manage" aria-label="工具与设置" hidden>
+<div class="jianji-pagehead"><div><h1 class="heading">管理中心</h1><p class="subheading">常用配置、数据备份与程序更新</p></div></div>
+<div class="jianji-manage-grid">
+<section class="panel jianji-manage-card" aria-label="记账设置">
+ <div class="panel-head"><div><h2 class="panel-title">记账设置</h2><p class="panel-desc">调整分类、模板和周期账单</p></div></div>
+ <div class="jianji-manage-actions">
+  <button type="button" class="jianji-manage-action" data-existing-trigger="categoryManageBtn"><span class="jianji-manage-glyph">◫</span><span><strong>自定义收支分类</strong><small>新增、改名或隐藏分类</small></span><b aria-hidden="true">›</b></button>
+  <button type="button" class="jianji-manage-action" data-existing-trigger="manageTemplatesBtn"><span class="jianji-manage-glyph">⚡</span><span><strong>快捷记账模板</strong><small>管理常用的记账组合</small></span><b aria-hidden="true">›</b></button>
+  <button type="button" class="jianji-manage-action" data-existing-trigger="manageRecurringBtn"><span class="jianji-manage-glyph">▣</span><span><strong>固定周期账单</strong><small>管理每月 / 每年的重复账单</small></span><b aria-hidden="true">›</b></button>
+  <button type="button" class="jianji-manage-action" data-existing-trigger="manageBudgetBtn"><span class="jianji-manage-glyph">◎</span><span><strong>月度预算设置</strong><small>家庭总预算与分类预算</small></span><b aria-hidden="true">›</b></button>
+ </div>
+</section>
+<section class="panel jianji-manage-card" aria-label="数据与程序">
+ <div class="panel-head"><div><h2 class="panel-title">数据与程序</h2><p class="panel-desc">备份、恢复、导出和更新</p></div></div>
+ <div class="jianji-manage-actions">
+  <button type="button" class="jianji-manage-action" data-existing-trigger="settingsBtn"><span class="jianji-manage-glyph">⇩</span><span><strong>备份与恢复</strong><small>JSON 备份、恢复和 CSV 导出</small></span><b aria-hidden="true">›</b></button>
+  <button type="button" class="jianji-manage-action" data-existing-trigger="settingsBtn" data-focus="pwa"><span class="jianji-manage-glyph">↻</span><span><strong>安装与程序更新</strong><small>查看离线缓存与检查新版</small></span><b aria-hidden="true">›</b></button>
+ </div>
+</section>
+</div>
+
+</section>
+<footer class="footer">简记 v1.1.1 · 无广告 · 无需注册 · 离线可用</footer>
+</div>
+<nav class="jianji-mobile-nav" aria-label="底部主导航">
+<button type="button" class="jianji-mobile-item active" data-page-nav="home" aria-controls="homePage" aria-current="page"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg><span>首页</span></button>
+<button type="button" class="jianji-mobile-item" data-page-nav="ledger" aria-controls="ledgerPage" aria-current="false"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h6"/></svg><span>流水</span></button>
+<button type="button" class="jianji-mobile-item jianji-mobile-add" id="mobileAddBtn" aria-label="记一笔"><span class="jianji-add-icon"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg></span><span>记一笔</span></button>
+<button type="button" class="jianji-mobile-item" data-page-nav="stats" aria-controls="statsPage" aria-current="false"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V11M10 19V6M16 19V13M22 19H2"/><circle cx="16" cy="7" r="2"/></svg><span>统计</span></button>
+<button type="button" class="jianji-mobile-item" data-page-nav="manage" aria-controls="managePage" aria-current="false"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a9 9 0 1 0 0 18 9 9 0 1 0 0-18"/><path d="M12 8v4l3 2M20 4l1-1"/></svg><span>管理</span></button>
+</nav>
 <button type="button" class="fab" id="fabBtn" aria-label="记一笔">＋</button>
 
 <div class="overlay hidden" id="entryOverlay" role="presentation"><div class="modal" role="dialog" aria-modal="true" aria-labelledby="entryModalTitle"><div class="modal-hd"><h2 id="entryModalTitle">记一笔</h2><button type="button" class="close-btn" data-close="entry" aria-label="关闭">×</button></div><form id="entryForm" novalidate><div class="type-switch"><button type="button" data-entry-type="expense" class="active">支出</button><button type="button" data-entry-type="income">收入</button></div><label for="amountInput" class="field-label" id="amountLabel">金额（人民币）</label><div class="amount-wrap"><span class="amount-symbol">¥</span><input type="text" inputmode="decimal" autocomplete="off" id="amountInput" class="amount-input" placeholder="0.00" aria-label="金额" maxlength="14" required /></div><div id="singleCategoryField"><span class="field-label">选择分类</span><div id="categoryPicks" class="category-grid" role="group" aria-label="分类"></div></div><div id="channelField" class="channel-field"><label for="channelSelect" class="field-label">消费平台 / 场所</label><select id="channelSelect" class="field" aria-label="消费平台或场所"><option value="其他日常消费">其他日常消费</option></select><input type="text" id="customChannelInput" class="field hidden custom-channel" maxlength="30" placeholder="输入商家或平台名称（最多30字）" autocomplete="off" aria-label="自定义消费场所名称"/><p class="field-hint">分类记录买了什么；渠道记录在哪里买或付给谁。默认“其他日常消费”，也可以选择京东、盒马或自定义商家。</p></div><div class="form-row"><div><label for="dateInput" class="field-label">日期</label><input type="date" id="dateInput" class="field" required/></div><div><label for="noteInput" class="field-label">备注（选填）</label><input id="noteInput" class="field" placeholder="比如：午餐、买菜" maxlength="120" autocomplete="off" /></div></div><div class="split-box hidden" id="splitBox"><div class="split-head"><strong>拆分明细</strong><button type="button" class="text-btn" id="addSplitBtn">＋ 添加分类行</button></div><p class="field-hint">订单总金额由各明细金额自动汇总，不需要选择额外的总分类。每项可以填写用途备注；退款可精确关联明细。</p><div id="splitRows"></div><p id="splitTotalHint" class="split-total"></p></div><button type="button" class="outline-btn split-toggle" id="splitToggleBtn">＋ 开启拆分记账</button>
@@ -746,6 +861,7 @@ document.querySelectorAll('[data-channel-scope]').forEach(b=>b.addEventListener(
 initStorage();
 })();
 </script>
+<script src="./navigation.js" defer></script>
 <script src="./pwa.js" defer></script>
 </body>
 </html>
